@@ -36,7 +36,59 @@ function switchTab(tabName) {
 }
 
 /**
- * Form Submit Handler via Backend API with Refined Parameters
+ * 2-Part Wizard Stepper (Part 1: Steps 1 & 2 / Part 2: Steps 3 & 4)
+ */
+function goToWizardPart(part) {
+    const part1 = document.getElementById('wizard-part-1');
+    const part2 = document.getElementById('wizard-part-2');
+    const tab1 = document.getElementById('wizard-progress-tab-1');
+    const tab2 = document.getElementById('wizard-progress-tab-2');
+
+    if (!part1 || !part2) return;
+
+    if (part === 2) {
+        const compNameInput = document.getElementById('comp-name');
+        if (compNameInput && !compNameInput.value.trim()) {
+            alert('기업명을 입력해 주세요.');
+            compNameInput.focus();
+            return;
+        }
+
+        part1.classList.add('hidden');
+        part2.classList.remove('hidden');
+
+        if (tab1) {
+            tab1.className = "py-3.5 px-4 sm:px-6 rounded-2xl border text-xs sm:text-sm font-black text-center transition-all bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 flex items-center justify-center gap-2 cursor-pointer";
+            const badge = tab1.querySelector('span:first-child');
+            if (badge) badge.className = "w-6 h-6 rounded-full bg-slate-300 text-slate-800 flex items-center justify-center text-xs";
+        }
+        if (tab2) {
+            tab2.className = "py-3.5 px-4 sm:px-6 rounded-2xl border text-xs sm:text-sm font-black text-center transition-all bg-teal-600 text-white border-teal-600 shadow-xs flex items-center justify-center gap-2 cursor-pointer";
+            const badge = tab2.querySelector('span:first-child');
+            if (badge) badge.className = "w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs";
+        }
+    } else {
+        part2.classList.add('hidden');
+        part1.classList.remove('hidden');
+
+        if (tab2) {
+            tab2.className = "py-3.5 px-4 sm:px-6 rounded-2xl border text-xs sm:text-sm font-black text-center transition-all bg-slate-100 text-slate-600 border-slate-200 hover:bg-slate-200 flex items-center justify-center gap-2 cursor-pointer";
+            const badge = tab2.querySelector('span:first-child');
+            if (badge) badge.className = "w-6 h-6 rounded-full bg-slate-300 text-slate-800 flex items-center justify-center text-xs";
+        }
+        if (tab1) {
+            tab1.className = "py-3.5 px-4 sm:px-6 rounded-2xl border text-xs sm:text-sm font-black text-center transition-all bg-teal-600 text-white border-teal-600 shadow-xs flex items-center justify-center gap-2 cursor-pointer";
+            const badge = tab1.querySelector('span:first-child');
+            if (badge) badge.className = "w-6 h-6 rounded-full bg-white/20 flex items-center justify-center text-xs";
+        }
+    }
+
+    const wizardTop = document.getElementById('section-wizard');
+    if (wizardTop) wizardTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/**
+ * Form Submit Handler via Backend API with 14 Multi-Dimensional Parameters
  */
 async function handleDiagnosisSubmit(e) {
     if (e) e.preventDefault();
@@ -45,34 +97,27 @@ async function handleDiagnosisSubmit(e) {
     const compSize = document.getElementById('comp-size').value;
     const compFieldSelect = document.getElementById('comp-field');
     const compField = compFieldSelect.options[compFieldSelect.selectedIndex].text;
-    
-    // New Procurement Diagnosis Fields
+    const compCert = document.getElementById('comp-cert').value;
+
+    const compTrack = document.getElementById('comp-track').value;
+    const compEpc = document.getElementById('comp-epc').value;
+    const compManpower = document.getElementById('comp-manpower').value;
+    const compFund = document.getElementById('comp-fund').value;
+
     const targetRegion = document.getElementById('target-region').value;
-    const techFormEl = document.querySelector('input[name="tech-form"]:checked');
-    const techForm = techFormEl ? techFormEl.value : 'skid';
-    
-    const fundingCap = document.getElementById('funding-cap').value;
-    const pbondCap = document.getElementById('pbond-cap') ? document.getElementById('pbond-cap').value : 'mid';
-    const certLevel = document.getElementById('cert-level').value;
+    const compBizModel = document.getElementById('comp-biz-model').value;
+    const compFinancing = document.getElementById('comp-financing').value;
+    const compTestbed = document.getElementById('comp-testbed').value;
 
-    const localNetwork = document.getElementById('local-network') ? document.getElementById('local-network').value : 'contact';
-    const onmCap = document.getElementById('onm-cap') ? document.getElementById('onm-cap').value : 'custom';
-
-    const trDomesticEl = document.querySelector('input[name="tr-domestic"]:checked');
-    const trDomestic = trDomesticEl ? parseInt(trDomesticEl.value) : 2;
-
-    const trOverseasEl = document.querySelector('input[name="tr-overseas"]:checked');
-    const trOverseas = trOverseasEl ? parseInt(trOverseasEl.value) : 1;
-
+    const compTimeline = document.getElementById('comp-timeline').value;
     const goalPurpose = document.getElementById('goal-purpose').value;
-    const legalCap = document.getElementById('legal-capacity').value;
+    const compBonus = document.getElementById('comp-bonus').value;
 
     const payload = {
-        compName, compSize, compField,
-        targetRegion, techForm, fundingCap, certLevel,
-        pbondCap, localNetwork, onmCap,
-        trDomestic, trOverseas,
-        goalPurpose, legalCap
+        compName, compSize, compField, compCert,
+        compTrack, compEpc, compManpower, compFund,
+        targetRegion, compBizModel, compFinancing, compTestbed,
+        compTimeline, goalPurpose, compBonus
     };
 
     // Call Backend REST API
@@ -99,13 +144,13 @@ async function renderResults() {
     document.getElementById('res-stage-badge').innerText = res.stageTitle;
     document.getElementById('res-desc-text').innerHTML = `귀사의 [<b>${res.compField}</b> / <b>${res.targetRegionName}</b>] 역량 진단 결과, <b>[${res.stageTitle}]</b> 지원 패키지가 가장 효율적입니다.`;
 
-    // Refined Score Pills (4 Axes: 기술/인증, 해외실적, 자부담여력, 법률/행정)
+    // Refined Score Pills (4 Axes: 기술·지재권, 실적·네트워크, 재무·자부담, 글로벌·EPC)
     const pillsBox = document.getElementById('score-summary-pills');
     pillsBox.innerHTML = `
-        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">기술/인증</span><b class="text-teal-700 text-sm">${res.techScore}점</b></div>
-        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">해외 실적</span><b class="text-teal-700 text-sm">${res.trackScore}점</b></div>
-        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">자부담 여력</span><b class="text-teal-700 text-sm">${res.fundScore}점</b></div>
-        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">법률/행정</span><b class="text-teal-700 text-sm">${res.legalScore}점</b></div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">기술·지재권</span><b class="text-teal-700 text-sm">${res.techScore}점</b></div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">실적·네트워크</span><b class="text-teal-700 text-sm">${res.trackScore}점</b></div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">재무·자부담</span><b class="text-teal-700 text-sm">${res.fundScore}점</b></div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100"><span class="text-slate-400 block text-[11px]">글로벌·EPC</span><b class="text-teal-700 text-sm">${res.legalScore}점</b></div>
     `;
 
     // Render Radar Chart with Updated 4 Axes
@@ -159,7 +204,7 @@ async function renderResults() {
 }
 
 /**
- * Chart.js Radar Chart Renderer (Updated 4 Axes: 기술/인증, 해외실적, 자부담여력, 법률/행정)
+ * Chart.js Radar Chart Renderer (Updated 4 Axes: 기술·지재권, 실적·네트워크, 재무·자부담, 글로벌·EPC)
  */
 function renderRadarChart(tech, track, fund, legal) {
     const canvas = document.getElementById('scoreRadarChart');
@@ -171,7 +216,7 @@ function renderRadarChart(tech, track, fund, legal) {
     radarChartInstance = new Chart(ctx, {
         type: 'radar',
         data: {
-            labels: ['기술/인증', '해외 실적', '자부담 여력', '법률/행정'],
+            labels: ['기술·지재권', '실적·네트워크', '재무·자부담', '글로벌·EPC'],
             datasets: [{
                 label: '기업 역량 점수',
                 data: [tech, track, fund, legal],
