@@ -296,22 +296,21 @@ async function openProgramModal(id) {
                 
                 <!-- Modal Top Header -->
                 <div class="flex justify-between items-start border-b border-slate-200/80 pb-5">
-                    <div class="space-y-1.5">
+                    <div class="space-y-2">
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-bold text-teal-800 bg-teal-100/90 px-3 py-1 rounded-lg border border-teal-200">${prog.tag}</span>
                             <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">${prog.badge}</span>
-                            ${prog.period ? `<span class="text-xs font-medium text-amber-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200/80">${prog.period}</span>` : ''}
                         </div>
                         <h3 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
                             ${prog.title}
                         </h3>
                     </div>
-                    <button onclick="closeProgramModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center transition cursor-pointer text-lg" aria-label="닫기">
+                    <button onclick="closeProgramModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center transition cursor-pointer text-lg shrink-0 ml-4" aria-label="닫기">
                         ✕
                     </button>
                 </div>
 
-                <!-- Key Quick Info 4-Card Grid -->
+                <!-- Key Quick Info 2-Card Grid -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl">
                         <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">주관 및 전담기관</p>
@@ -365,6 +364,12 @@ async function openProgramModal(id) {
                     <h4 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
                         <span class="w-2.5 h-2.5 rounded-full bg-slate-900"></span> 사업 추진 절차 & 공식 문의처
                     </h4>
+                    ${prog.period ? `
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200/70">
+                            <p class="text-xs text-slate-500 font-bold mb-1">신청 및 사업 일정</p>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800">${prog.period}</p>
+                        </div>
+                    ` : ''}
                     ${prog.process ? `
                         <div class="bg-white p-3.5 rounded-xl border border-slate-200/70">
                             <p class="text-xs text-slate-500 font-bold mb-1">추진 프로세스</p>
