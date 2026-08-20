@@ -443,11 +443,19 @@ async function openProgramModal(id) {
         </div>
     `;
     document.body.insertAdjacentHTML('beforeend', modalHtml);
+    document.addEventListener('keydown', handleModalKeydown);
+}
+
+function handleModalKeydown(e) {
+    if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        closeProgramModal();
+    }
 }
 
 function closeProgramModal() {
     const modal = document.getElementById('prog-modal');
     if (modal) modal.remove();
+    document.removeEventListener('keydown', handleModalKeydown);
 }
 
 /**
