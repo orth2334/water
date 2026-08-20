@@ -12,18 +12,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshHistoryTable();
 });
 
-// Global ESC Key Listener to Close Any Active Modal
+// Global ESC Key Listener to Close Any Active Modal or Chatbot Widget
 window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        closeChatbot();
         closeProgramModal();
     }
 });
 
 /**
- * Tab Switcher
+ * Tab Switcher (4 Main Tabs: Wizard, Result, Knowledge, History)
  */
 function switchTab(tabName) {
-    const tabs = ['wizard', 'result', 'ai', 'knowledge', 'history'];
+    const tabs = ['wizard', 'result', 'knowledge', 'history'];
     tabs.forEach(t => {
         const section = document.getElementById(`section-${t}`);
         const btn = document.getElementById(`tab-btn-${t}`);
@@ -32,11 +33,11 @@ function switchTab(tabName) {
         if (t === tabName) {
             section.classList.remove('hidden');
             btn.classList.add('active-tab');
-            btn.classList.remove('hover:text-slate-200');
+            btn.classList.remove('hover:text-slate-100');
         } else {
             section.classList.add('hidden');
             btn.classList.remove('active-tab');
-            btn.classList.add('hover:text-slate-200');
+            btn.classList.add('hover:text-slate-100');
         }
     });
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -466,6 +467,39 @@ function closeProgramModal() {
 }
 
 /**
+ * Floating AI Chatbot Widget Controller
+ */
+function openChatbot() {
+    const widget = document.getElementById('ai-chatbot-widget');
+    const launcher = document.getElementById('ai-chat-launcher');
+    if (widget) widget.classList.remove('hidden');
+    if (launcher) launcher.classList.add('hidden');
+    const chatInput = document.getElementById('chat-input');
+    if (chatInput) setTimeout(() => chatInput.focus(), 150);
+}
+
+function closeChatbot() {
+    const widget = document.getElementById('ai-chatbot-widget');
+    const launcher = document.getElementById('ai-chat-launcher');
+    if (widget) widget.classList.add('hidden');
+    if (launcher) launcher.classList.remove('hidden');
+}
+
+function toggleChatbot() {
+    const widget = document.getElementById('ai-chatbot-widget');
+    if (widget && widget.classList.contains('hidden')) {
+        openChatbot();
+    } else {
+        closeChatbot();
+    }
+}
+
+function openChatbotAndAsk(prompt) {
+    openChatbot();
+    sendChatMessage(prompt);
+}
+
+/**
  * Gemini AI Chat Message Handler
  */
 async function sendChatMessage(customPrompt = null) {
@@ -480,8 +514,8 @@ async function sendChatMessage(customPrompt = null) {
 
     // Render User Bubble
     chatMessages.innerHTML += `
-        <div class="flex items-start justify-end gap-3 my-3">
-            <div class="chat-bubble-user p-3.5 rounded-2xl max-w-[85%] text-sm leading-relaxed shadow-sm">
+        <div class="flex items-start justify-end gap-2.5 my-2.5">
+            <div class="chat-bubble-user p-3 rounded-2xl max-w-[85%] text-xs sm:text-sm leading-relaxed shadow-2xs font-semibold">
                 ${promptText}
             </div>
         </div>
@@ -491,11 +525,11 @@ async function sendChatMessage(customPrompt = null) {
     // Render Loading Indicator
     const loadingId = 'ai-loading-' + Date.now();
     chatMessages.innerHTML += `
-        <div class="flex items-start gap-3 my-3" id="${loadingId}">
-            <div class="w-8 h-8 rounded-xl bg-teal-700 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">AI</div>
-            <div class="chat-bubble-ai p-4 rounded-2xl text-sm text-slate-500 shadow-sm flex items-center gap-2">
+        <div class="flex items-start gap-2.5 my-2.5" id="${loadingId}">
+            <div class="w-7 h-7 rounded-lg bg-teal-700 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 shadow-2xs">AI</div>
+            <div class="chat-bubble-ai p-3 rounded-2xl bg-white border border-slate-200 text-xs text-slate-500 shadow-2xs flex items-center gap-2">
                 <i class="fa-solid fa-circle-notch fa-spin text-teal-600"></i>
-                <span>백엔드 API를 경유하여 Gemini AI 응답을 생성 중입니다...</span>
+                <span>Gemini AI 전문 답변을 생성 중입니다...</span>
             </div>
         </div>
     `;
@@ -511,9 +545,9 @@ async function sendChatMessage(customPrompt = null) {
     const formattedHtml = parseMarkdownToHTML(replyText);
 
     chatMessages.innerHTML += `
-        <div class="flex items-start gap-3 my-3">
-            <div class="w-8 h-8 rounded-xl bg-teal-700 text-white flex items-center justify-center text-xs font-bold shrink-0 shadow-sm">AI</div>
-            <div class="chat-bubble-ai p-4 rounded-2xl max-w-[85%] text-sm text-slate-800 shadow-sm leading-relaxed">
+        <div class="flex items-start gap-2.5 my-2.5">
+            <div class="w-7 h-7 rounded-lg bg-teal-700 text-white flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 shadow-2xs">AI</div>
+            <div class="chat-bubble-ai p-3.5 rounded-2xl bg-white border border-slate-200 text-xs sm:text-sm text-slate-800 shadow-2xs leading-relaxed max-w-[88%] font-medium">
                 ${formattedHtml}
             </div>
         </div>
@@ -522,7 +556,7 @@ async function sendChatMessage(customPrompt = null) {
 }
 
 function sendQuickQuestion(text) {
-    switchTab('ai');
+    openChatbot();
     sendChatMessage(text);
 }
 
@@ -531,7 +565,7 @@ function generateAIReport() {
         alert("먼저 자가진단을 완료해 주세요.");
         return;
     }
-    switchTab('ai');
+    openChatbot();
     const prompt = `우리 기업(${currentDiagnosisResult.compName}, 분야: ${currentDiagnosisResult.compField}, 타깃권역: ${currentDiagnosisResult.targetRegionName})의 고도화 자가진단 결과를 바탕으로 해외진출 맞춤형 전략 보고서를 작성해줘.`;
     sendChatMessage(prompt);
 }
