@@ -254,63 +254,141 @@ function filterKnowledgeCards() {
 }
 
 /**
- * Open Program Modal Detail
+ * Open Program Modal Detail (2026 KEITI PDF Comprehensive Specification)
  */
 async function openProgramModal(id) {
     const prog = await apiFetchProgramDetail(id);
     if (!prog) return;
 
+    // Check if existing modal is open and remove
+    closeProgramModal();
+
+    const supportDetailsList = prog.supportDetails && prog.supportDetails.length > 0
+        ? prog.supportDetails.map(item => `
+            <li class="flex items-start gap-2">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-teal-600 mt-2 shrink-0"></span>
+                <span class="text-slate-800 text-xs sm:text-sm leading-relaxed">${item}</span>
+            </li>
+        `).join('')
+        : `<li class="text-slate-700 text-xs sm:text-sm">${prog.desc}</li>`;
+
+    const eligibilityList = prog.eligibility && prog.eligibility.length > 0
+        ? prog.eligibility.map(item => `
+            <li class="flex items-start gap-2">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-slate-500 mt-2 shrink-0"></span>
+                <span class="text-slate-800 text-xs sm:text-sm leading-relaxed">${item}</span>
+            </li>
+        `).join('')
+        : `<li class="text-slate-700 text-xs sm:text-sm">${prog.fit}</li>`;
+
+    const documentsList = prog.documents && prog.documents.length > 0
+        ? prog.documents.map((doc, idx) => `
+            <li class="flex items-start gap-2 bg-white p-2.5 rounded-xl border border-slate-200/80 shadow-2xs">
+                <span class="w-5 h-5 rounded-lg bg-teal-50 text-teal-800 font-extrabold text-[11px] flex items-center justify-center shrink-0 border border-teal-200/70">${idx + 1}</span>
+                <span class="text-slate-800 text-xs sm:text-sm font-medium leading-relaxed">${doc}</span>
+            </li>
+        `).join('')
+        : `<li class="text-slate-600 text-xs sm:text-sm">공고문 참조</li>`;
+
     const modalHtml = `
-        <div id="prog-modal" class="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-4">
-            <div class="bg-white rounded-2xl p-6 sm:p-8 max-w-lg w-full shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
-                <div class="flex justify-between items-start border-b border-slate-100 pb-4 mb-4">
-                    <div>
-                        <span class="text-xs font-bold text-teal-700 bg-teal-50 px-3 py-1 rounded-md border border-teal-200">${prog.tag}</span>
-                        <h3 class="text-xl font-extrabold text-slate-900 mt-2">
+        <div id="prog-modal" class="fixed inset-0 z-50 modal-backdrop flex items-center justify-center p-3 sm:p-6 animate-fade-in" onclick="if(event.target.id==='prog-modal') closeProgramModal()">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-2xl sm:max-w-3xl w-full shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto space-y-6">
+                
+                <!-- Modal Top Header -->
+                <div class="flex justify-between items-start border-b border-slate-200/80 pb-5">
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-teal-800 bg-teal-100/90 px-3 py-1 rounded-lg border border-teal-200">${prog.tag}</span>
+                            <span class="text-xs font-bold text-slate-700 bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200">${prog.badge}</span>
+                            ${prog.period ? `<span class="text-xs font-medium text-amber-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200/80">${prog.period}</span>` : ''}
+                        </div>
+                        <h3 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-snug">
                             ${prog.title}
                         </h3>
                     </div>
-                    <button onclick="closeProgramModal()" class="text-slate-400 hover:text-slate-600 p-1"><i class="fa-solid fa-xmark text-xl"></i></button>
+                    <button onclick="closeProgramModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center transition cursor-pointer text-lg" aria-label="닫기">
+                        ✕
+                    </button>
                 </div>
-                
-                <div class="space-y-4 text-xs sm:text-sm">
-                    <div>
-                        <h4 class="font-bold text-slate-800 mb-1">사업 주요 내용</h4>
-                        <p class="text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">${prog.desc}</p>
-                    </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                            <h4 class="font-bold text-slate-800 mb-1">전담 기관</h4>
-                            <p class="text-teal-700 font-semibold">${prog.agency}</p>
+                <!-- Key Quick Info 4-Card Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">주관 및 전담기관</p>
+                        <p class="text-xs sm:text-sm font-black text-slate-900 mt-0.5">${prog.agency}</p>
+                    </div>
+                    <div class="p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl">
+                        <p class="text-xs font-bold text-slate-500 uppercase tracking-wide">2026 지원예산 및 한도</p>
+                        <p class="text-xs sm:text-sm font-black text-teal-800 mt-0.5">${prog.budget}</p>
+                    </div>
+                </div>
+
+                <!-- Section 1: 사업 개요 및 주요 지원 내용 -->
+                <div class="p-5 bg-teal-50/40 border border-teal-100 rounded-2xl space-y-3">
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-teal-600"></span> 사업 개요 및 핵심 지원 혜택
+                    </h4>
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium bg-white p-3.5 rounded-xl border border-teal-100/80">
+                        ${prog.desc}
+                    </p>
+                    <ul class="space-y-2 pt-1">
+                        ${supportDetailsList}
+                    </ul>
+                </div>
+
+                <!-- Section 2: 신청 자격 및 추천 대상 -->
+                <div class="p-5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-3">
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-700"></span> 추천 대상 및 신청 자격 요건
+                    </h4>
+                    <div class="bg-white p-3.5 rounded-xl border border-slate-200/70">
+                        <p class="text-xs text-slate-500 font-bold mb-1">핵심 추천 프로필</p>
+                        <p class="text-xs sm:text-sm font-semibold text-slate-800">${prog.fit}</p>
+                    </div>
+                    <ul class="space-y-2 pt-1">
+                        ${eligibilityList}
+                    </ul>
+                </div>
+
+                <!-- Section 3: 필수 신청 제출 서류 목록 -->
+                <div class="p-5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-3">
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-600"></span> 필수 제출 구비 서류 체크리스트
+                    </h4>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        ${documentsList}
+                    </ul>
+                </div>
+
+                <!-- Section 4: 추진 절차 및 공식 문의처 -->
+                <div class="p-5 bg-slate-50 border border-slate-200/80 rounded-2xl space-y-3">
+                    <h4 class="text-sm sm:text-base font-extrabold text-slate-900 flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-900"></span> 사업 추진 절차 & 공식 문의처
+                    </h4>
+                    ${prog.process ? `
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200/70">
+                            <p class="text-xs text-slate-500 font-bold mb-1">추진 프로세스</p>
+                            <p class="text-xs sm:text-sm font-semibold text-slate-800 leading-relaxed">${prog.process}</p>
                         </div>
-                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                            <h4 class="font-bold text-slate-800 mb-1">적용 Stage</h4>
-                            <p class="text-slate-700">Stage ${prog.stageMatch.join(', ')}</p>
+                    ` : ''}
+                    ${prog.contact ? `
+                        <div class="p-3 bg-teal-100/60 border border-teal-200 rounded-xl flex items-center justify-between">
+                            <span class="text-xs font-bold text-teal-900">전담 문의처:</span>
+                            <span class="text-xs sm:text-sm font-extrabold text-teal-950">${prog.contact}</span>
                         </div>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-800 mb-1">지원 예산 및 항목</h4>
-                        <p class="text-slate-700 font-medium">${prog.budget}</p>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-800 mb-1">추천 대상 기업</h4>
-                        <p class="text-slate-600">${prog.fit}</p>
-                    </div>
-
-                    <div>
-                        <h4 class="font-bold text-slate-800 mb-1">필수 신청 구비 서류</h4>
-                        <ul class="list-disc ml-5 space-y-1 text-slate-600">
-                            ${prog.documents.map(d => `<li>${d}</li>`).join('')}
-                        </ul>
-                    </div>
+                    ` : ''}
                 </div>
 
-                <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
-                    <button onclick="closeProgramModal()" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-5 py-2.5 rounded-xl text-xs transition">닫기</button>
+                <!-- Modal Bottom Action Bar -->
+                <div class="pt-4 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-3">
+                    <p class="text-xs text-slate-600 font-medium">
+                        * 2026년 한국환경산업기술원(KEITI) 해외진출 지원사업 통합설명회 모집요강 기준
+                    </p>
+                    <button onclick="closeProgramModal()" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold px-8 py-3 rounded-xl text-xs sm:text-sm transition cursor-pointer shadow-md">
+                        닫기
+                    </button>
                 </div>
+
             </div>
         </div>
     `;

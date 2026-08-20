@@ -25,7 +25,7 @@ async function apiSubmitDiagnosis(formPayload) {
 }
 
 /**
- * Fetch 8-Program Directory from Backend
+ * Fetch 8-Program Directory from Backend (with Static Fallback for GitHub Pages)
  */
 async function apiFetchPrograms(stageFilter = 'all', searchQuery = '') {
     try {
@@ -34,26 +34,53 @@ async function apiFetchPrograms(stageFilter = 'all', searchQuery = '') {
         if (searchQuery) url.searchParams.append('search', searchQuery);
 
         const response = await fetch(url.toString());
-        const json = await response.json();
-        return json.success ? json.data : [];
+        if (response.ok) {
+            const json = await response.json();
+            if (json.success && json.data) return json.data;
+        }
     } catch (err) {
-        console.error("API fetch programs error:", err);
-        return [];
+        console.warn("Backend API not reachable, falling back to local database:", err);
     }
+
+    // Static fallback using window.PROGRAM_DATABASE
+    if (typeof PROGRAM_DATABASE !== 'undefined' && Array.isArray(PROGRAM_DATABASE)) {
+        let result = PROGRAM_DATABASE;
+        if (stageFilter && stageFilter !== 'all') {
+            const stageNum = parseInt(stageFilter);
+            result = result.filter(p => p.stageMatch && p.stageMatch.includes(stageNum));
+        }
+        if (searchQuery) {
+            const q = searchQuery.toLowerCase().trim();
+            result = result.filter(p =>
+                (p.title && p.title.toLowerCase().includes(q)) ||
+                (p.desc && p.desc.toLowerCase().includes(q)) ||
+                (p.tag && p.tag.toLowerCase().includes(q))
+            );
+        }
+        return result;
+    }
+    return [];
 }
 
 /**
- * Fetch Single Program Detail by ID
+ * Fetch Single Program Detail by ID (with Static Fallback)
  */
 async function apiFetchProgramDetail(id) {
+    const numId = parseInt(id);
     try {
-        const response = await fetch(`${API_BASE_URL}/programs/${id}`);
-        const json = await response.json();
-        return json.success ? json.data : null;
+        const response = await fetch(`${API_BASE_URL}/programs/${numId}`);
+        if (response.ok) {
+            const json = await response.json();
+            if (json.success && json.data) return json.data;
+        }
     } catch (err) {
-        console.error("API fetch program detail error:", err);
-        return null;
+        console.warn("Backend API detail not reachable, falling back to local database:", err);
     }
+
+    if (typeof PROGRAM_DATABASE !== 'undefined' && Array.isArray(PROGRAM_DATABASE)) {
+        return PROGRAM_DATABASE.find(p => p.id === numId) || null;
+    }
+    return null;
 }
 
 /**
