@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     await refreshHistoryTable();
 });
 
+// Global ESC Key Listener to Close Any Active Modal
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+        closeProgramModal();
+    }
+});
+
 /**
  * Tab Switcher
  */
@@ -455,7 +462,7 @@ function handleModalKeydown(e) {
 function closeProgramModal() {
     const modal = document.getElementById('prog-modal');
     if (modal) modal.remove();
-    document.removeEventListener('keydown', handleModalKeydown);
+    document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
 }
 
 /**

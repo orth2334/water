@@ -553,8 +553,23 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="./js/program_db.js?v=20260220_v5"></script>
-    <script src="./js/apiClient.js?v=20260220_v5"></script>
-    <script src="./js/uiController.js?v=20260220_v5"></script>
+    <script src="./js/program_db.js?v=20260220_v7"></script>
+    <script src="./js/apiClient.js?v=20260220_v7"></script>
+    <script src="./js/uiController.js?v=20260220_v7"></script>
+    
+    <!-- Inline Bulletproof ESC Key Listener for Modals -->
+    <script>
+        window.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+                if (typeof closeProgramModal === 'function') {
+                    closeProgramModal();
+                } else {
+                    var modal = document.getElementById('prog-modal');
+                    if (modal) modal.remove();
+                    document.querySelectorAll('.modal-backdrop').forEach(function(el){ el.remove(); });
+                }
+            }
+        });
+    </script>
 </body>
 </html>
