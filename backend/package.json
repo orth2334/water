@@ -1,0 +1,14 @@
+{
+  "name": "k-green-water-backend",
+  "version": "1.0.0",
+  "description": "K-Green & Water 해외진출 맞춤형 진단 및 패스트트랙 시스템 백엔드 API 서버",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}
