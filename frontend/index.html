@@ -83,8 +83,11 @@
                 <button id="demand-tab-btn-result" onclick="switchDemandTab('result')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
                     <i class="fa-solid fa-chart-line text-emerald-400"></i> 2. 수요 진단 결과 & 기업 매칭
                 </button>
+                <button id="demand-tab-btn-knowledge" onclick="switchDemandTab('knowledge')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-diagram-project text-teal-400"></i> 3. 8대 지원사업 가이드
+                </button>
                 <button id="demand-tab-btn-history" onclick="switchDemandTab('history')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i> 3. 수요 진단 이력 관리
+                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i> 4. 수요 진단 이력 관리
                 </button>
                 <button id="demand-tab-btn-matching" onclick="switchDemandTab('matching')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 pl-4">
                     <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i> ⚡ 통합 매칭 허브
@@ -796,7 +799,32 @@
             </section>
 
 
-            <!-- SUB-SECTION 3: DEMAND HISTORY (3. 수요 진단 이력 관리) -->
+            <!-- SUB-SECTION 3: DEMAND KNOWLEDGE (3. 8대 지원사업 가이드) -->
+            <section id="demand-section-knowledge" class="space-y-6 hidden">
+                <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
+                    <div class="flex flex-wrap justify-between items-center gap-4 border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-diagram-project text-teal-600"></i> 2026 환경부·기술원 녹색·물산업 8대 지원사업 가이드
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">해외 프로젝트 발주처 및 글로벌 인프라 사업에 연계 가능한 정부 패스트트랙 지원사업 포트폴리오입니다.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="filterDemandKnowledgeCards('all')" class="demand-kn-filter-btn active-filter px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-white cursor-pointer" data-filter="all">전체보기</button>
+                            <button onclick="filterDemandKnowledgeCards('타당성')" class="demand-kn-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer" data-filter="타당성">타당성(F/S)</button>
+                            <button onclick="filterDemandKnowledgeCards('실증')" class="demand-kn-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer" data-filter="실증">현지실증</button>
+                            <button onclick="filterDemandKnowledgeCards('수출')" class="demand-kn-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer" data-filter="수출">수출상담</button>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="demand-knowledge-cards-container">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- SUB-SECTION 4: DEMAND HISTORY (4. 수요 진단 이력 관리) -->
             <section id="demand-section-history" class="space-y-6 hidden">
                 <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
                     <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">

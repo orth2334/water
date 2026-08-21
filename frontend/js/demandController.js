@@ -100,10 +100,10 @@ function switchMainRoleMode(mode, shouldSave = true) {
 }
 
 /**
- * 2. Demand Mode Sub-Tab Switcher (Form, Result, History, Matching)
+ * 2. Demand Mode Sub-Tab Switcher (Form, Result, Knowledge, History, Matching)
  */
 function switchDemandTab(tabName, shouldSave = true) {
-    const tabs = ['form', 'result', 'history', 'matching'];
+    const tabs = ['form', 'result', 'knowledge', 'history', 'matching'];
 
     // Update Tab Buttons UI
     tabs.forEach(t => {
@@ -134,7 +134,7 @@ function switchDemandTab(tabName, shouldSave = true) {
         if (demandContainer) demandContainer.classList.remove('hidden');
 
         // Update Sections Visibility
-        ['form', 'result', 'history'].forEach(t => {
+        ['form', 'result', 'knowledge', 'history'].forEach(t => {
             const sec = document.getElementById(`demand-section-${t}`);
             if (sec) {
                 sec.classList.toggle('hidden', t !== tabName);
@@ -144,6 +144,8 @@ function switchDemandTab(tabName, shouldSave = true) {
         // Sub-actions
         if (tabName === 'history') {
             loadDemandHistory();
+        } else if (tabName === 'knowledge') {
+            renderDemandKnowledgeCards();
         } else if (tabName === 'result') {
             const emptyState = document.getElementById('demand-result-empty-state');
             const contentContainer = document.getElementById('demand-result-content-container');
@@ -998,4 +1000,64 @@ function filterMatchingByField(fieldKey) {
     }
     // Switch to matching hub
     switchMainRoleMode('matching');
+}
+
+/**
+ * 11. Render 8-Program Knowledge Base for Demand Mode
+ */
+let allDemandProgramsCache = null;
+
+async function renderDemandKnowledgeCards(filterTag = 'all') {
+    const container = document.getElementById('demand-knowledge-cards-container');
+    if (!container) return;
+
+    if (!allDemandProgramsCache) {
+        if (typeof apiFetchPrograms === 'function') {
+            allDemandProgramsCache = await apiFetchPrograms();
+        } else if (typeof PROGRAMS_DB !== 'undefined') {
+            allDemandProgramsCache = PROGRAMS_DB;
+        }
+    }
+
+    if (!allDemandProgramsCache || allDemandProgramsCache.length === 0) {
+        container.innerHTML = '<div class="col-span-full py-8 text-center text-slate-400">정부 지원사업 데이터를 불러오는 중입니다.</div>';
+        return;
+    }
+
+    const filtered = filterTag === 'all' 
+        ? allDemandProgramsCache 
+        : allDemandProgramsCache.filter(p => (p.tag && p.tag.includes(filterTag)) || (p.title && p.title.includes(filterTag)));
+
+    container.innerHTML = filtered.map(p => `
+        <div class="bg-slate-50 hover:bg-white border border-slate-200 hover:border-teal-400 hover:shadow-lg transition-all rounded-2xl p-5 flex flex-col justify-between space-y-4">
+            <div class="space-y-2.5">
+                <div class="flex items-center justify-between gap-1">
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded-md bg-teal-100 text-teal-800 border border-teal-200">${p.tag}</span>
+                    <span class="text-[11px] font-bold text-slate-500">${p.badge}</span>
+                </div>
+                <h4 class="text-sm font-black text-slate-900 leading-snug line-clamp-2">${p.title}</h4>
+                <p class="text-xs text-slate-600 line-clamp-2 leading-relaxed font-medium">${p.desc}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-200/80 space-y-2 text-xs">
+                <div class="text-[11px] text-slate-500 flex justify-between">
+                    <span>주관: <b>${p.agency}</b></span>
+                    <span class="text-teal-700 font-bold">${p.budget}</span>
+                </div>
+                <button onclick="openProgramModal(${p.id})" class="w-full py-2 rounded-xl bg-slate-900 hover:bg-teal-600 text-white font-bold text-xs transition flex items-center justify-center gap-1 cursor-pointer">
+                    <span>지원 가이드 상세</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterDemandKnowledgeCards(filterTag) {
+    document.querySelectorAll('.demand-kn-filter-btn').forEach(btn => {
+        const isActive = btn.getAttribute('data-filter') === filterTag;
+        btn.className = isActive
+            ? "demand-kn-filter-btn active-filter px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-900 text-white cursor-pointer"
+            : "demand-kn-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer";
+    });
+    renderDemandKnowledgeCards(filterTag);
 }
