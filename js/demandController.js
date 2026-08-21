@@ -599,11 +599,9 @@ function closeDemandDetailModal() {
 
 function renderModalSuppliersList(suppliers) {
     const container = document.getElementById('modal-suppliers-list');
-    const countBadge = document.getElementById('modal-supplier-count-badge');
     if (!container) return;
 
     const count = suppliers ? suppliers.length : 0;
-    if (countBadge) countBadge.innerText = `${count}개사 매칭 및 지원 중`;
 
     if (!suppliers || suppliers.length === 0) {
         container.innerHTML = '<p class="text-sm text-slate-500 py-4 text-center font-medium">현재 검증된 공급기업 풀을 집계 중입니다.</p>';
