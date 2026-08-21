@@ -55,42 +55,52 @@
 
         <!-- Supplier Navigation Tabs (Active when in Supplier Mode) -->
         <div class="bg-slate-900/70 border-t border-slate-800/60 backdrop-blur-md" id="tab-nav-container">
-            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium text-slate-300">
-                <button id="tab-btn-wizard" onclick="switchTab('wizard')" class="py-2.5 px-3 active-tab whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-sliders text-teal-400"></i> 1. 기업 역량 자가진단
+            <div class="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-5 gap-1 text-xs sm:text-sm font-medium text-slate-300">
+                <button id="tab-btn-wizard" onclick="switchTab('wizard')" class="nav-tab-btn py-3 px-1 sm:px-2 active-tab whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-sliders text-teal-400"></i>
+                    <span class="truncate">1. 기업 역량 자가진단</span>
                 </button>
-                <button id="tab-btn-result" onclick="switchTab('result')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-chart-pie text-emerald-400"></i> 2. 진단 결과 & 패스트트랙
+                <button id="tab-btn-result" onclick="switchTab('result')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-chart-pie text-emerald-400"></i>
+                    <span class="truncate">2. 진단 결과 & 로드맵</span>
                 </button>
-                <button id="tab-btn-knowledge" onclick="switchTab('knowledge')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-diagram-project text-teal-400"></i> 3. 8대 지원사업 가이드
+                <button id="tab-btn-knowledge" onclick="switchTab('knowledge')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-diagram-project text-teal-400"></i>
+                    <span class="truncate">3. 8대 지원사업 가이드</span>
                 </button>
-                <button id="tab-btn-history" onclick="switchTab('history')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i> 4. 진단 이력 관리
+                <button id="tab-btn-history" onclick="switchTab('history')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i>
+                    <span class="truncate">4. 진단 이력 관리</span>
                 </button>
-                <button id="tab-btn-matching" onclick="switchTab('matching')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 pl-4">
-                    <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i> ⚡ 통합 매칭 허브
+                <button id="tab-btn-matching" onclick="switchTab('matching')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 text-center">
+                    <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i>
+                    <span class="truncate">⚡ 통합 매칭 허브</span>
                 </button>
             </div>
         </div>
 
         <!-- Demand Navigation Tabs (Active when in Demand Mode) -->
         <div class="bg-slate-900/70 border-t border-slate-800/60 backdrop-blur-md hidden" id="demand-tab-nav-container">
-            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium text-slate-300">
-                <button id="demand-tab-btn-form" onclick="switchDemandTab('form')" class="py-2.5 px-3 active-tab whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-clipboard-list text-teal-400"></i> 1. 해외 인프라 수요 측정
+            <div class="max-w-7xl mx-auto px-2 sm:px-4 grid grid-cols-5 gap-1 text-xs sm:text-sm font-medium text-slate-300">
+                <button id="demand-tab-btn-form" onclick="switchDemandTab('form')" class="nav-tab-btn py-3 px-1 sm:px-2 active-tab whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-clipboard-list text-teal-400"></i>
+                    <span class="truncate">1. 해외 인프라 수요측정</span>
                 </button>
-                <button id="demand-tab-btn-result" onclick="switchDemandTab('result')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-chart-line text-emerald-400"></i> 2. 수요 진단 결과 & 기업 매칭
+                <button id="demand-tab-btn-result" onclick="switchDemandTab('result')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-chart-line text-emerald-400"></i>
+                    <span class="truncate">2. 수요 진단 & 매칭</span>
                 </button>
-                <button id="demand-tab-btn-knowledge" onclick="switchDemandTab('knowledge')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-diagram-project text-teal-400"></i> 3. 8대 지원사업 가이드
+                <button id="demand-tab-btn-knowledge" onclick="switchDemandTab('knowledge')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-diagram-project text-teal-400"></i>
+                    <span class="truncate">3. 8대 지원사업 가이드</span>
                 </button>
-                <button id="demand-tab-btn-history" onclick="switchDemandTab('history')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
-                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i> 4. 수요 진단 이력 관리
+                <button id="demand-tab-btn-history" onclick="switchDemandTab('history')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center">
+                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i>
+                    <span class="truncate">4. 수요 진단 이력관리</span>
                 </button>
-                <button id="demand-tab-btn-matching" onclick="switchDemandTab('matching')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 pl-4">
-                    <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i> ⚡ 통합 매칭 허브
+                <button id="demand-tab-btn-matching" onclick="switchDemandTab('matching')" class="nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 text-center">
+                    <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i>
+                    <span class="truncate">⚡ 통합 매칭 허브</span>
                 </button>
             </div>
         </div>

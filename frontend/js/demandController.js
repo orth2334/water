@@ -110,9 +110,9 @@ function switchDemandTab(tabName, shouldSave = true) {
         const btn = document.getElementById(`demand-tab-btn-${t}`);
         if (btn) {
             if (t === tabName) {
-                btn.className = "py-2.5 px-3 active-tab whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-slate-100";
+                btn.className = "nav-tab-btn py-3 px-1 sm:px-2 active-tab whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center text-slate-100";
             } else {
-                btn.className = "py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-slate-300";
+                btn.className = "nav-tab-btn py-3 px-1 sm:px-2 hover:text-slate-100 whitespace-nowrap flex items-center justify-center gap-1.5 transition cursor-pointer text-center text-slate-300";
             }
         }
     });

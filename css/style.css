@@ -36,11 +36,18 @@ body {
     box-shadow: 0 14px 28px -4px rgba(13, 148, 136, 0.12);
 }
 
+.nav-tab-btn {
+    width: 100%;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
 .active-tab {
-    border-bottom: 3px solid var(--primary-teal);
-    color: var(--primary-teal);
-    font-weight: 700;
-    background-color: rgba(13, 148, 136, 0.06);
+    border-bottom: 3px solid #14b8a6 !important;
+    color: #2dd4bf !important;
+    font-weight: 800 !important;
+    background-color: rgba(15, 23, 42, 0.7) !important;
 }
 
 /* Custom Scrollbars */
