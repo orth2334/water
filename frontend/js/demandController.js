@@ -434,63 +434,63 @@ function renderDemandsGrid(demands) {
     if (!gridContainer) return;
 
     if (demands.length === 0) {
-        gridContainer.innerHTML = '<div class="col-span-full py-12 text-center text-slate-400">해당 조건에 맞는 해외 수요 프로젝트가 없습니다.</div>';
+        gridContainer.innerHTML = '<div class="col-span-full py-12 text-center text-slate-400 font-medium">해당 조건에 맞는 해외 수요 프로젝트가 없습니다.</div>';
         return;
     }
 
     gridContainer.innerHTML = demands.map(d => {
         const urgencyBadge = d.urgency === 'high' 
-            ? '<span class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30 shrink-0"><i class="fa-solid fa-bolt mr-1"></i>긴급 발주</span>' 
-            : '<span class="px-2 py-0.5 text-[11px] font-bold rounded-md bg-teal-500/20 text-teal-300 border border-teal-500/30 shrink-0">중장기 기획</span>';
+            ? '<span class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-200 shrink-0 shadow-2xs flex items-center gap-1"><i class="fa-solid fa-bolt text-rose-500 text-[10px]"></i>긴급 발주</span>' 
+            : '<span class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-slate-100 text-slate-700 border border-slate-200 shrink-0">중장기 기획</span>';
 
         return `
-            <div onclick="openDemandDetailModal('${d.id}')" class="bg-slate-900/80 rounded-2xl border border-slate-800 p-5 hover:border-teal-500/60 hover:shadow-xl hover:shadow-teal-950/40 transition-all flex flex-col justify-between space-y-3.5 cursor-pointer group">
+            <div onclick="openDemandDetailModal('${d.id}')" class="bg-white rounded-2xl border-2 border-slate-200/90 hover:border-teal-500 hover:shadow-xl hover:-translate-y-0.5 transition-all p-5 flex flex-col justify-between space-y-3.5 cursor-pointer group shadow-2xs">
                 <div class="space-y-2.5">
                     <!-- Top Location & Urgency -->
                     <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-1.5 text-xs font-bold text-teal-400 truncate">
-                            <i class="fa-solid fa-location-dot"></i>
+                        <div class="flex items-center gap-1.5 text-xs font-bold text-teal-800 truncate">
+                            <i class="fa-solid fa-location-dot text-teal-600"></i>
                             <span>${d.country}</span>
-                            <span class="text-slate-500 font-normal">· ${d.regionName}</span>
+                            <span class="text-slate-400 font-medium">· ${d.regionName}</span>
                         </div>
                         ${urgencyBadge}
                     </div>
 
                     <!-- Clean Title (No duplicate country name) -->
-                    <h4 class="font-extrabold text-white text-base leading-snug group-hover:text-teal-300 transition line-clamp-2">${d.title}</h4>
+                    <h4 class="font-black text-slate-900 text-base leading-snug group-hover:text-teal-700 transition line-clamp-2">${d.title}</h4>
                     
                     <!-- 1-Line Clean Summary -->
-                    <p class="text-xs text-slate-400 line-clamp-1 leading-relaxed">
+                    <p class="text-xs text-slate-500 line-clamp-1 leading-relaxed font-medium">
                         ${d.issueType}
                     </p>
 
-                    <!-- Clean 2x2 Specs Dashboard -->
-                    <div class="grid grid-cols-2 gap-2 text-xs bg-slate-950/70 p-3 rounded-xl border border-slate-800/80">
+                    <!-- Clean 2x2 Specs Dashboard (Soft Light Box) -->
+                    <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50/90 p-3.5 rounded-xl border border-slate-200/80">
                         <div>
-                            <span class="text-[11px] text-slate-500 block">사업 예산</span>
-                            <span class="font-black text-emerald-400 text-xs">${d.budgetScale}</span>
+                            <span class="text-[11px] text-slate-400 font-bold block">사업 예산</span>
+                            <span class="font-black text-emerald-600 text-xs sm:text-sm">${d.budgetScale}</span>
                         </div>
                         <div>
-                            <span class="text-[11px] text-slate-500 block">목표 용량</span>
-                            <span class="font-bold text-slate-200 text-xs">${d.targetCapacity}</span>
+                            <span class="text-[11px] text-slate-400 font-bold block">목표 용량</span>
+                            <span class="font-bold text-slate-800 text-xs sm:text-sm">${d.targetCapacity}</span>
                         </div>
-                        <div class="pt-2 border-t border-slate-800/70">
-                            <span class="text-[11px] text-slate-500 block">발주처</span>
-                            <span class="font-medium text-slate-300 text-[11px] truncate block" title="${d.clientOrg}">${d.clientOrg}</span>
+                        <div class="pt-2 border-t border-slate-200/70">
+                            <span class="text-[11px] text-slate-400 font-bold block">발주처</span>
+                            <span class="font-bold text-slate-700 text-[11px] truncate block" title="${d.clientOrg}">${d.clientOrg}</span>
                         </div>
-                        <div class="pt-2 border-t border-slate-800/70">
-                            <span class="text-[11px] text-slate-500 block">재원 조달</span>
-                            <span class="font-medium text-teal-300/90 text-[11px] truncate block" title="${d.financingTypeName}">${d.financingTypeName}</span>
+                        <div class="pt-2 border-t border-slate-200/70">
+                            <span class="text-[11px] text-slate-400 font-bold block">재원 조달</span>
+                            <span class="font-bold text-indigo-700 text-[11px] truncate block" title="${d.financingTypeName}">${d.financingTypeName}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Bottom Timeline & Detail Prompt -->
-                <div class="pt-2.5 flex items-center justify-between border-t border-slate-800 text-xs text-slate-400 font-medium">
-                    <span class="flex items-center gap-1.5 text-[11px]">
-                        <i class="fa-regular fa-calendar-check text-teal-400"></i> ${d.targetTimeline}
+                <div class="pt-2.5 flex items-center justify-between border-t border-slate-100 text-xs font-medium">
+                    <span class="flex items-center gap-1.5 text-[11px] text-slate-500 font-semibold">
+                        <i class="fa-regular fa-calendar-check text-teal-600"></i> ${d.targetTimeline}
                     </span>
-                    <span class="text-teal-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 text-[11px] font-bold">
+                    <span class="text-teal-700 group-hover:text-teal-900 group-hover:translate-x-1 transition-all flex items-center gap-1 text-xs font-black bg-teal-50 group-hover:bg-teal-100 px-2.5 py-1 rounded-lg border border-teal-200 shadow-2xs">
                         <span>상세보기</span>
                         <i class="fa-solid fa-arrow-right text-[10px]"></i>
                     </span>
