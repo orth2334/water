@@ -5,6 +5,8 @@ const path = require('path');
 const diagnosisRouter = require('./routes/diagnosis');
 const programsRouter = require('./routes/programs');
 const consultingRouter = require('./routes/consulting');
+const demandRouter = require('./routes/demand');
+const matchingRouter = require('./routes/matching');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,6 +25,8 @@ app.get('/api/health', (req, res) => {
 app.use('/api/diagnose', diagnosisRouter);
 app.use('/api/programs', programsRouter);
 app.use('/api/consulting', consultingRouter);
+app.use('/api/demand', demandRouter);
+app.use('/api/matching', matchingRouter);
 
 // Serve static frontend files if available
 const frontendPath = path.join(__dirname, '../frontend');

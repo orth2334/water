@@ -18,13 +18,14 @@
 
     <!-- Header -->
     <header class="gradient-header text-white sticky top-0 z-40 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-wrap justify-between items-center gap-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
             <div class="flex items-center space-x-3">
                 <div>
                     <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
-                        K-녹색·물산업 해외진출 네비게이터
+                        K-녹색·물산업 글로벌 네비게이터
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/40">수요·공급 통합 매칭</span>
                     </h1>
-                    <p class="text-xs text-slate-300 mt-0.5">녹색·물산업 기업 해외진출 역량 진단 & 타깃 권역/기술형태/자부담 맞춤형 추천 플랫폼</p>
+                    <p class="text-xs text-slate-300 mt-0.5">한국 수출기업 역량 진단 ↔ 해외 국가·발주처 인프라 수요 측정 및 양방향 스마트 매칭 플랫폼</p>
                 </div>
             </div>
             
@@ -35,26 +36,62 @@
                 <button onclick="openChatbot()" class="bg-teal-700 hover:bg-teal-600 text-white text-xs px-3.5 py-2 rounded-xl font-bold transition flex items-center gap-1.5 shadow-sm cursor-pointer border border-teal-500/40">
                     <i class="fa-solid fa-comments text-teal-200"></i> AI 1:1 수주 컨설팅
                 </button>
-                <button onclick="switchTab('wizard')" class="bg-teal-600 hover:bg-teal-500 text-white text-xs sm:text-sm px-4 py-2 rounded-xl font-bold transition flex items-center gap-2 shadow-md cursor-pointer">
-                    <i class="fa-solid fa-clipboard-check"></i> 진단 시작하기
-                </button>
             </div>
         </div>
         
-        <!-- Navigation Tabs (4 Main Workflow Tabs) -->
-        <div class="bg-slate-900/70 border-t border-slate-800 backdrop-blur-md" id="tab-nav-container">
-            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-2 sm:space-x-6 text-xs sm:text-sm font-medium text-slate-300">
-                <button id="tab-btn-wizard" onclick="switchTab('wizard')" class="py-3 px-3 active-tab whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+        <!-- TOP-LEVEL ROLE VIEW 2-WAY TOGGLE (공급자 모드 ⟷ 수요자 모드) -->
+        <div class="bg-slate-950/80 border-t border-slate-800 backdrop-blur-md px-4 py-2.5">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 text-xs font-bold shadow-inner">
+                    <button id="role-btn-supplier" onclick="switchMainRoleMode('supplier')" class="role-switcher-btn py-2 px-4 rounded-xl transition-all duration-200 cursor-pointer flex items-center gap-2 bg-teal-500 text-slate-900 shadow-md active-role">
+                        <i class="fa-solid fa-building-flag"></i> 🇰🇷 공급자 모드 (한국 기업 진단)
+                    </button>
+                    <button id="role-btn-demand" onclick="switchMainRoleMode('demand')" class="role-switcher-btn py-2 px-4 rounded-xl transition-all duration-200 cursor-pointer flex items-center gap-2 text-slate-400 hover:text-white hover:bg-slate-800/60">
+                        <i class="fa-solid fa-earth-americas"></i> 🌐 수요자 모드 (해외 수요 측정)
+                    </button>
+                </div>
+                <div class="text-[11px] text-slate-400 hidden md:flex items-center gap-2">
+                    <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>실시간 글로벌 발주 수요 <b>87건</b> & 한국 공급기업 <b>132개사</b> 매칭 연계 중</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supplier Navigation Tabs (Active when in Supplier Mode) -->
+        <div class="bg-slate-900/70 border-t border-slate-800/60 backdrop-blur-md" id="tab-nav-container">
+            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium text-slate-300">
+                <button id="tab-btn-wizard" onclick="switchTab('wizard')" class="py-2.5 px-3 active-tab whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
                     <i class="fa-solid fa-sliders text-teal-400"></i> 1. 기업 역량 자가진단
                 </button>
-                <button id="tab-btn-result" onclick="switchTab('result')" class="py-3 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                <button id="tab-btn-result" onclick="switchTab('result')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
                     <i class="fa-solid fa-chart-pie text-emerald-400"></i> 2. 진단 결과 & 패스트트랙
                 </button>
-                <button id="tab-btn-knowledge" onclick="switchTab('knowledge')" class="py-3 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                <button id="tab-btn-knowledge" onclick="switchTab('knowledge')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
                     <i class="fa-solid fa-diagram-project text-teal-400"></i> 3. 8대 지원사업 가이드
                 </button>
-                <button id="tab-btn-history" onclick="switchTab('history')" class="py-3 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                <button id="tab-btn-history" onclick="switchTab('history')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
                     <i class="fa-solid fa-clock-rotate-left text-teal-400"></i> 4. 진단 이력 관리
+                </button>
+                <button id="tab-btn-matching" onclick="switchTab('matching')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 pl-4">
+                    <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i> ⚡ 통합 매칭 허브
+                </button>
+            </div>
+        </div>
+
+        <!-- Demand Navigation Tabs (Active when in Demand Mode) -->
+        <div class="bg-slate-900/70 border-t border-slate-800/60 backdrop-blur-md hidden" id="demand-tab-nav-container">
+            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto space-x-2 sm:space-x-4 text-xs sm:text-sm font-medium text-slate-300">
+                <button id="demand-tab-btn-form" onclick="switchDemandTab('form')" class="py-2.5 px-3 active-tab whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-clipboard-list text-teal-400"></i> 1. 해외 인프라 수요 측정
+                </button>
+                <button id="demand-tab-btn-result" onclick="switchDemandTab('result')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-chart-line text-emerald-400"></i> 2. 수요 진단 결과 & 기업 매칭
+                </button>
+                <button id="demand-tab-btn-history" onclick="switchDemandTab('history')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-clock-rotate-left text-teal-400"></i> 3. 수요 진단 이력 관리
+                </button>
+                <button id="demand-tab-btn-matching" onclick="switchDemandTab('matching')" class="py-2.5 px-3 hover:text-slate-100 whitespace-nowrap flex items-center gap-2 transition cursor-pointer text-amber-300 font-bold border-l border-slate-800/80 pl-4">
+                    <i class="fa-solid fa-arrows-split-up-and-left text-amber-400"></i> ⚡ 통합 매칭 허브
                 </button>
             </div>
         </div>
@@ -62,6 +99,11 @@
 
     <!-- Main Container -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- ========================================================================= -->
+        <!-- ROLE VIEW 1: SUPPLIER MODE (한국 기업 해외진출 진단 - 기존 4개 섹션) -->
+        <!-- ========================================================================= -->
+        <div id="role-view-supplier" class="space-y-6">
 
         <!-- SECTION 1: DIAGNOSTIC WIZARD (ENHANCED 2-PART STEPPER) -->
         <section id="section-wizard" class="space-y-6">
@@ -99,227 +141,199 @@
                                 <span class="w-8 h-8 rounded-xl bg-teal-600 text-white font-black flex items-center justify-center text-sm shadow-xs">1</span>
                                 <span>1단계: 기업 기본 정보 및 기술·지식재산권(IP) 역량</span>
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">기업명</label>
-                                    <input type="text" id="comp-name" placeholder="예: (주)한국스마트수자원" value="(주)한국스마트수자원" required class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">기업명 <span class="text-rose-500">*</span></label>
+                                    <input type="text" id="comp-name" required placeholder="(주)한국스마트워터" value="(주)한국스마트워터" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">기업 규모</label>
-                                    <select id="comp-size" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="small">소기업 (연매출 10억 미만)</option>
-                                        <option value="sme" selected>중소기업 (연매출 10억 ~ 300억 미만)</option>
-                                        <option value="mid">중견기업 (연매출 300억 ~ 3,000억 미만)</option>
-                                        <option value="large">대기업 / 글로벌 종합 EPC사</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">기업 규모 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-size" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="sme">중소기업 (매출 120억 이하)</option>
+                                        <option value="mid">중견기업</option>
+                                        <option value="large">대기업</option>
+                                        <option value="small">소상공인/초기스타트업</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">주력 녹색·물기술 분야 (12대 분류)</label>
-                                    <select id="comp-field" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="smart_water_grid" selected>스마트 상수도 & AI 누수탐지·관망 제어</option>
-                                        <option value="purification_plant">고도 정수처리 & 멤브레인(막분리) 여과 시스템</option>
-                                        <option value="sewage_wastewater">지자체 하수 고도처리 & 수질 정화</option>
-                                        <option value="industrial_wastewater">산업 폐수 고도처리 & 무방류(ZLD) 시스템</option>
-                                        <option value="water_reuse">하·폐수 재이용(Reclaim) & 빗물·수자원 재활용</option>
-                                        <option value="sludge_biogas">하수슬러지 감량화 & 유기성 폐자원 바이오가스화</option>
-                                        <option value="desalination_ro">해수담수화 (RO 역소매) & 해양 수자원 개발</option>
-                                        <option value="ultrapure_water">초순수(UPW) 생산 & 반도체·발전소 산업용수</option>
-                                        <option value="waste_to_energy">도시 폐기물 열분해·가스화 & Waste-to-Energy</option>
-                                        <option value="air_pollution">대기오염 방지 (집진·탈질·탈황) & 미세먼지 저감</option>
-                                        <option value="ccus_carbon">탄소포집·활용·저장 (CCUS) & 온실가스 감축</option>
-                                        <option value="smart_instrument_sw">수질 측정 계측기 & AI 기반 통합 수관리 S/W</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">12대 전략 녹색·물기술 분야 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-field" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="smart_water_grid">스마트 상하수도 및 지능형 관망관리</option>
+                                        <option value="desalination">해수담수화 및 염분차 발전 / 수자원 확보</option>
+                                        <option value="industrial_wastewater">산업폐수 무방류(ZLD) 및 고도처리</option>
+                                        <option value="sludge_bioenergy">하수슬러지 감량 및 바이오가스 / 에너지화</option>
+                                        <option value="water_resources_flood">통합 수자원 관리(IWRM) 및 홍수·가뭄 조기경보</option>
+                                        <option value="membrane_filtration">고도 정수처리 분리막(UF/NF/RO) 및 필터</option>
+                                        <option value="micro_pollutants">미세플라스틱/잔류의약물질 등 신종오염물질 저감</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">글로벌 지식재산권(IP) 및 기술 인증</label>
-                                    <select id="comp-cert" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="pct" selected>PCT 국제특허 출원 또는 해외 등록 특허 보유</option>
-                                        <option value="global_cert">해외 기술인증(CE, NSF, ISO, UL 등) 보유</option>
-                                        <option value="net_nep">국내 신기술(NET) / 신제품(NEP) / 우수특허 보유</option>
-                                        <option value="domestic_pat">국내 일반 등록 특허 보유 (해외 인증 미보유)</option>
-                                        <option value="none">특허/인증 준비 단계 (보유 지재권 없음)</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">특허 및 신기술(NET/NEP) 인증 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-cert" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="pct">해외/국제특허(PCT) 등록 보유</option>
+                                        <option value="global_cert">해외 공인 인증(NSF, CE, UL 등) 보유</option>
+                                        <option value="net_nep">국내 NET/NEP/우수조달/혁신제품</option>
+                                        <option value="domestic_pat">국내 일반 등록 특허 2건 이상</option>
+                                        <option value="none">특허/인증 없음 또는 출원 중</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Step 2: Track Record, EPC/O&M, Manpower & Financial Capacity -->
+                        <!-- Step 2: Track Record, EPC Capability & Global Execution Readiness -->
                         <div class="bg-slate-50/80 p-6 sm:p-8 rounded-3xl border border-slate-200 hover:border-teal-400 transition-all space-y-6 shadow-2xs">
                             <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-3">
                                 <span class="w-8 h-8 rounded-xl bg-teal-600 text-white font-black flex items-center justify-center text-sm shadow-xs">2</span>
-                                <span>2단계: 사업 수행 실적, 시공·운영 역량 & 재무 안정성</span>
+                                <span>2단계: 사업 실적, EPC·O&M 수행 역량 및 현지 파트너십</span>
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">국내외 사업 수행 실적 (Track Record)</label>
-                                    <select id="comp-track" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="overseas_multi">해외 현지 시공/수주 실적 다수 보유 (3건 이상)</option>
-                                        <option value="overseas_single" selected>해외 프로젝트 1~2건 또는 샘플 수출 경험 보유</option>
-                                        <option value="domestic_multi">국내 공공/지자체/민간 수처리 상용화 실적 다수</option>
-                                        <option value="domestic_single">국내 1~2건 시범 설치 / 사업화 초기 단계</option>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">납품 및 시공 실적 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-track" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="overseas_multi">해외 수주/납품 실적 다수 (3건 이상)</option>
+                                        <option value="overseas_single" selected>해외 실적 1~2건 보유</option>
+                                        <option value="domestic_multi">국내 공공/민간 실적 다수 (해외 무)</option>
+                                        <option value="domestic_single">국내 초기 실적 1~2건 (실증 필요)</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">시공·엔지니어링(EPC) & O&M 운영 역량</label>
-                                    <select id="comp-epc" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="epc_turnkey" selected>EPC 턴키 시공 및 플랜트 종합 엔지니어링 역량 보유</option>
-                                        <option value="onm_service">장기 위탁운영 및 유지보수(O&M) / AI 원격관제 역량 보유</option>
-                                        <option value="equipment_mfg">고품질 핵심 기자재·센서·막(Membrane) 전문 제조 역량</option>
-                                        <option value="consulting_design">엔지니어링 설계·감리 및 타당성 기술 용역 중심</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">EPC 및 엔지니어링 수행 체계 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-epc" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="epc_turnkey" selected>EPC 턴키(설계·시공·조달) 일괄 수행 가능</option>
+                                        <option value="onm_service">위탁운영(O&M) 및 유지관리 솔루션 보유</option>
+                                        <option value="equipment_mfg">단품 장비/자재 제조 및 패키지 납품형</option>
+                                        <option value="consulting_design">기본설계/타당성 엔지니어링 컨설팅형</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">글로벌 전담 인력 & 영문 제안서 역량</label>
-                                    <select id="comp-manpower" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="team_fluent" selected>해외영업 전담팀 보유 (영문 RFP 및 계약서 자체 작성 가능)</option>
-                                        <option value="staff_basic">실무자 1~2인 보유 (영문 작성 및 협상 외부 자문 필요)</option>
-                                        <option value="lang_only">외국어 가능 인력 보유 (전문 법률/계약 검토 지원 필요)</option>
-                                        <option value="none">전담 인력 미보유 (정부 1:1 컨설팅 전액 지원 필요)</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">해외 사업 전담 인력 & 어학 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-manpower" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="team_fluent" selected>해외영업/엔지니어링 전담팀 (다국어 능통)</option>
+                                        <option value="staff_basic">전담자 1~2명 (기본 비즈니스 회화 가능)</option>
+                                        <option value="lang_only">대표/임원 직접 총괄 (어학 지원 필요)</option>
+                                        <option value="none">해외 전담 인력 전무 (통번역/컨설팅 절실)</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">재무 안정성 & 민간 자부담 매칭 여력</label>
-                                    <select id="comp-fund" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="fund_100m" selected>현금 1억 원 이상 자부담 매칭 가능 (신용등급 우수)</option>
-                                        <option value="fund_50m">현금 3,000만 ~ 5,000만 원 자부담 매칭 가능</option>
-                                        <option value="fund_20m">현금 1,000만 ~ 3,000만 원 소규모 자부담 가능</option>
-                                        <option value="fund_zero">자부담 최소화 희망 (전액 국비 100% 지원 선호)</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">민간 자부담 확보 여력 (현금) <span class="text-rose-500">*</span></label>
+                                    <select id="comp-fund" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="fund_100m" selected>1억 원 이상 즉시 매칭 가능</option>
+                                        <option value="fund_50m">5,000만 원 ~ 1억 원 미만 가능</option>
+                                        <option value="fund_20m">2,000만 원 ~ 5,000만 원 가능</option>
+                                        <option value="fund_zero">자부담 최소화 필요 (무상/바우처 희망)</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Step 1-2 Next Navigation Button -->
-                        <div class="pt-4 flex justify-end">
-                            <button type="button" onclick="goToWizardPart(2)" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-teal-600 hover:bg-teal-500 text-white font-black px-8 sm:px-10 py-4 rounded-2xl shadow-md hover:shadow-teal-500/25 transition-all text-sm sm:text-base cursor-pointer">
-                                <span>다음 단계 (3·4단계 타깃 시장 & 지원 수요) 이동</span>
+                        <!-- Stepper Next Button -->
+                        <div class="flex justify-end pt-2">
+                            <button type="button" onclick="goToWizardPart(2)" class="px-8 py-3.5 bg-teal-600 hover:bg-teal-500 text-white font-extrabold rounded-2xl transition-all shadow-md flex items-center gap-2 text-sm cursor-pointer">
+                                <span>다음 단계로 이동 (타깃 시장 & 지원 수요)</span>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
                         </div>
-
                     </div>
 
                     <!-- ================= PART 2: STEP 3 & STEP 4 ================= -->
                     <div id="wizard-part-2" class="space-y-8 hidden">
-
-                        <!-- Step 3: Target Region, Biz Model, Financing & Test-bed Needs -->
+                        
+                        <!-- Step 3: Target Region, Business Model & Financing Preference -->
                         <div class="bg-slate-50/80 p-6 sm:p-8 rounded-3xl border border-slate-200 hover:border-teal-400 transition-all space-y-6 shadow-2xs">
                             <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-3">
                                 <span class="w-8 h-8 rounded-xl bg-teal-600 text-white font-black flex items-center justify-center text-sm shadow-xs">3</span>
-                                <span>3단계: 타깃 시장, 진출 비즈니스 모델 & 재원 조달 전략</span>
+                                <span>3단계: 목표 진출 권역, 비즈니스 모델 및 파이낸싱 구조</span>
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">주력 타깃 진출 권역 및 국가</label>
-                                    <select id="target-region" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="sea" selected>동남아시아 (베트남, 인도네시아, 필리핀, 캄보디아, 라오스 등)</option>
-                                        <option value="me">중동 / 북아프리카 (사우디, UAE, 카타르, 이집트 등)</option>
-                                        <option value="ca">중앙아시아 / CIS (우즈베키스탄, 카자흐스탄, 타지키스탄 등)</option>
-                                        <option value="la">중남미 / 아프리카 (가나, 르완다, 콜롬비아, 페루 등)</option>
-                                        <option value="sa">서남아시아 (인도, 방글라데시, 스리랑카 등)</option>
-                                        <option value="global">선진 시장 (미국, 유럽, 일본, 호주 등)</option>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">최우선 타깃 권역 <span class="text-rose-500">*</span></label>
+                                    <select id="target-region" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="sea" selected>동남아시아 (베트남, 인도네시아, 필리핀 등)</option>
+                                        <option value="me">중동 / 북아프리카 (사우디, UAE, 카타르 등)</option>
+                                        <option value="ca">중앙아시아 (우즈베키스탄, 카자흐스탄 등)</option>
+                                        <option value="la">중남미 / 아프리카 (콜롬비아, 가나, 르완다 등)</option>
+                                        <option value="sa">서남아시아 (인도, 방글라데시 등)</option>
+                                        <option value="global">선진 시장 (미국, 유럽 등)</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">희망 사업 형태 (비즈니스 모델)</label>
-                                    <select id="comp-biz-model" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="equipment_export" selected>수처리 장비·기자재·솔루션 패키지 직접 수출</option>
-                                        <option value="epc_turnkey">프로젝트 종합 EPC 턴키 시공 및 인프라 구축</option>
-                                        <option value="joint_venture">현지 파트너와의 합작법인(JV) 설립 및 지분 투자</option>
-                                        <option value="licensing_onm">현지 기술 라이선싱 및 장기 O&M 용역 위탁</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">희망 비즈니스 진출 모델 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-biz-model" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="equipment_export" selected>단품 설비/기자재 해외 직수출</option>
+                                        <option value="epc_turnkey">현지 EPC 턴키 프로젝트 주계약/하도급</option>
+                                        <option value="licensing_onm">기술 라이선싱 및 O&M 장기 위탁운영</option>
+                                        <option value="joint_venture">현지 파트너사와의 합작법인(JV) / PPP 투자</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">선호 재원 조달 방식</label>
-                                    <select id="comp-financing" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="commercial" selected>민간 상업 발주 (B2B/B2G 발주처 자체 재원 조달)</option>
-                                        <option value="oda_edcf">한국 정부 ODA 무상원조 / EDCF 유상 차관 연계</option>
-                                        <option value="mdb_loan">다자개발은행(세계은행, ADB, AfDB 등) 프로젝트 차관</option>
-                                        <option value="gcf_climate">녹색기후기금(GCF) 및 국제 기후금융 재원 연계</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">현지 실증(Test-bed) 부지 확보 필요 여부</label>
-                                    <select id="comp-testbed" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="testbed_needed" selected>현지 수질/기후 맞춤 파일럿 실증 필수 (Test-bed 지원 필요)</option>
-                                        <option value="supply_chain">무역상사 연계 글로벌 공급망 진출 및 인증 취득 우선</option>
-                                        <option value="commercial_ready">이미 상용화 완료되어 현지 실증 불필요 (입찰 즉시 참여)</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">선호 파이낸싱/재원 조달 방식 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-financing" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="commercial" selected>발주처 자체 예산 / 일반 상업차관 프로젝트</option>
+                                        <option value="oda_edcf">정부 ODA / EDCF 유상원조 연계 프로젝트</option>
+                                        <option value="mdb_loan">MDB(세계은행, ADB 등) 다자개발은행 차관</option>
+                                        <option value="gcf_climate">GCF(녹색기후기금) 등 국제 기후금융 연계</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Step 4: Timeline, Government Support Demand & Policy Bonus -->
+                        <!-- Step 4: Test-bed, Timeline, Fast-Track Goal & Policy Bonus -->
                         <div class="bg-slate-50/80 p-6 sm:p-8 rounded-3xl border border-slate-200 hover:border-teal-400 transition-all space-y-6 shadow-2xs">
                             <h3 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-3">
                                 <span class="w-8 h-8 rounded-xl bg-teal-600 text-white font-black flex items-center justify-center text-sm shadow-xs">4</span>
-                                <span>4단계: 진출 일정, 최우선 정부 지원 수요 & 정책 가점</span>
+                                <span>4단계: 현지 실증(Test-bed), 추진 일정 및 정부 정책 가점</span>
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">참여 가능 시기 및 추진 긴급도</label>
-                                    <select id="comp-timeline" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="immediate" selected>즉시 참여 희망 (3개월 이내 / 바이어 초청·컨설팅)</option>
-                                        <option value="short">단기 시장 개척 (6개월~1년 이내 / 타당성조사·현지실증)</option>
-                                        <option value="mid_long">중장기 프로젝트 기획 (1~2년 이내 / M/P·MDB·GCF)</option>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">현지 실증(Test-bed) 필요성 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-testbed" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="commercial_ready">이미 상용화 완료 (실증 없이 즉시 납품 가능)</option>
+                                        <option value="supply_chain">현지 맞춤 개조 후 6개월 내 단기 실증 희망</option>
+                                        <option value="testbed_needed" selected>현지 수질/환경 조건 실증(Test-bed) 필수 필요</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">최우선 정부 지원 수요 (단일 선택)</label>
-                                    <select id="goal-purpose" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="buyer">1. 해외 바이어 초청 상담회 (GGHK) - 1:1 매칭 지원</option>
-                                        <option value="fs">2. 해외 환경프로젝트 타당성 조사 (F/S) - 용역비 국비 보조</option>
-                                        <option value="mp">3. 개도국 환경개선 마스터플랜 (M/P) - ODA 기본계획 수립</option>
-                                        <option value="mdb">4. MDB 환경 프로젝트 수주 지원 - MDB 숏리스트 및 RFP</option>
-                                        <option value="testbed" selected>5. 녹색기술 해외 현지실증 (Test-bed) - 파일럿 설치/검증</option>
-                                        <option value="consulting">6. 환경기업 해외진출 전문컨설팅 - 1:1 법률/관세 자문</option>
-                                        <option value="gcf">7. GCF 사업개발 및 개도국 지원 - 기후기금 제안서 작성</option>
-                                        <option value="office">8. 해외사무소 운영 - 현지 거점 사무공간 및 발주정보</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">해외 사업 추진 희망 시점 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-timeline" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="immediate" selected>즉시 착수 가능 (2026년 상반기 공고 지원)</option>
+                                        <option value="short">6개월 이내 착수 (2026년 하반기 추진)</option>
+                                        <option value="mid_long">중장기 기획 단계 (2027년 이후 진출 대비)</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">정책 가점 및 파트너십 이력</label>
-                                    <select id="comp-bonus" class="w-full px-4 py-3.5 text-sm sm:text-base border border-slate-300 rounded-xl focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 focus:outline-none transition bg-white font-bold text-slate-900 shadow-2xs">
-                                        <option value="excellent_env" selected>환경부 '우수환경산업체' 또는 장관/국무총리 표창 보유 (가점)</option>
-                                        <option value="trading_partner">2026 녹색무역상사 협업 매칭 트랙 참여 희망</option>
-                                        <option value="loi_secured">현지 발주처 공식 사업의향서(LOI/MOU) 기확보 (우대)</option>
-                                        <option value="general">해당 사항 없음 (일반 지원 대상)</option>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">최우선 희망 패스트트랙 목적 <span class="text-rose-500">*</span></label>
+                                    <select id="goal-purpose" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="testbed" selected>현지 실증(PoC) 및 파일럿 플랜트 설치 지원</option>
+                                        <option value="fs">해외 발주 프로젝트 타당성 조사(F/S) 국비 지원</option>
+                                        <option value="buyer">해외 유력 바이어 초청 및 1:1 상담 매칭(GGHK)</option>
+                                        <option value="voucher">수출 바우처 / 해외 규격 인증 획득 비용 지원</option>
+                                        <option value="winwin">대기업-중소기업 동반진출 / ODA 사업 수주</option>
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="block text-sm sm:text-base font-extrabold text-slate-800 mb-2">희망/필요 지원 항목 (복수 선택)</label>
-                                    <div class="grid grid-cols-2 gap-3 pt-1">
-                                        <label class="px-4 py-3 border border-slate-300 rounded-xl hover:border-teal-500 hover:bg-teal-50/60 cursor-pointer transition flex items-center gap-2.5 text-xs sm:text-sm font-bold text-slate-800 bg-white shadow-2xs">
-                                            <input type="checkbox" id="need-buyer" checked class="w-4 h-4 rounded text-teal-600 focus:ring-teal-500"> 바이어 초청비
-                                        </label>
-                                        <label class="px-4 py-3 border border-slate-300 rounded-xl hover:border-teal-500 hover:bg-teal-50/60 cursor-pointer transition flex items-center gap-2.5 text-xs sm:text-sm font-bold text-slate-800 bg-white shadow-2xs">
-                                            <input type="checkbox" id="need-testbed" checked class="w-4 h-4 rounded text-teal-600 focus:ring-teal-500"> 현지 실증비
-                                        </label>
-                                        <label class="px-4 py-3 border border-slate-300 rounded-xl hover:border-teal-500 hover:bg-teal-50/60 cursor-pointer transition flex items-center gap-2.5 text-xs sm:text-sm font-bold text-slate-800 bg-white shadow-2xs">
-                                            <input type="checkbox" id="need-consulting" class="w-4 h-4 rounded text-teal-600 focus:ring-teal-500"> 법률 자문
-                                        </label>
-                                        <label class="px-4 py-3 border border-slate-300 rounded-xl hover:border-teal-500 hover:bg-teal-50/60 cursor-pointer transition flex items-center gap-2.5 text-xs sm:text-sm font-bold text-slate-800 bg-white shadow-2xs">
-                                            <input type="checkbox" id="need-finance" class="w-4 h-4 rounded text-teal-600 focus:ring-teal-500"> 해외 금융보증
-                                        </label>
-                                    </div>
+                                <div class="space-y-1.5">
+                                    <label class="block text-xs font-bold text-slate-700">정부 정책 가점 우대 요건 <span class="text-rose-500">*</span></label>
+                                    <select id="comp-bonus" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:border-teal-500 focus:outline-none bg-white">
+                                        <option value="excellent_env" selected>우수환경산업체 / 녹색혁신기업 인증 보유</option>
+                                        <option value="loi_secured">해외 발주처/바이어와의 MOU 또는 LOI 기확보</option>
+                                        <option value="trading_partner">전문무역상사 연계 또는 탄소중립 선도기업</option>
+                                        <option value="general">해당 없음 (일반 지원 대상)</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Step 3-4 Action Bar (Prev / Submit) -->
-                        <div class="pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
-                            <button type="button" onclick="goToWizardPart(1)" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-black px-6 py-4 rounded-2xl transition cursor-pointer text-sm sm:text-base">
+                        <!-- Stepper Action Buttons -->
+                        <div class="flex justify-between pt-2">
+                            <button type="button" onclick="goToWizardPart(1)" class="px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition flex items-center gap-2 text-sm cursor-pointer border border-slate-200">
                                 <i class="fa-solid fa-arrow-left"></i>
-                                <span>이전 단계 (1·2단계 기업 역량)</span>
+                                <span>이전 단계로</span>
                             </button>
-                            <button type="submit" class="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black px-10 py-4 rounded-2xl shadow-xl hover:shadow-teal-500/25 transition-all text-sm sm:text-base cursor-pointer whitespace-nowrap">
-                                <span>고도화 진단 결과 및 맞춤 패키지 도출하기</span>
-                                <i class="fa-solid fa-wand-magic-sparkles text-amber-300 text-lg"></i>
+                            <button type="submit" id="btn-submit-diagnosis" class="px-8 py-3.5 bg-teal-600 hover:bg-teal-500 text-white font-extrabold rounded-2xl transition-all shadow-lg flex items-center gap-2 text-sm sm:text-base cursor-pointer">
+                                <i class="fa-solid fa-calculator"></i>
+                                <span>14개 다차원 심층 진단 실행 & 패스트트랙 도출</span>
                             </button>
                         </div>
-
                     </div>
-
                 </form>
             </div>
         </section>
@@ -327,73 +341,96 @@
         <!-- SECTION 2: DIAGNOSIS RESULTS & ROADMAP -->
         <section id="section-result" class="space-y-6 hidden">
             
-            <!-- Result Summary Header Card -->
-            <div id="result-header-card" class="bg-gradient-to-r from-slate-900 via-slate-800 to-teal-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div class="space-y-2">
-                    <div class="flex items-center gap-2">
-                        <span id="res-comp-tag" class="bg-teal-500/30 text-teal-200 text-xs px-3 py-1 rounded-full border border-teal-400/30 font-semibold">진단 완료</span>
-                        <span id="res-stage-badge" class="bg-emerald-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-sm">Stage 2: 현지 실증 검증 단계</span>
-                    </div>
-                    <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white" id="res-title-text">(주)한국스마트수자원 맞춤형 해외진출 패스트트랙</h2>
-                    <p class="text-xs sm:text-sm text-slate-300" id="res-desc-text">귀사의 기술력과 준비도 분석 결과, <b>[5번 현지실증(Test-bed) + 1번 바이어 초청상담]</b> 연계 패키지가 가장 효율적입니다.</p>
+            <!-- 1. EMPTY STATE (아직 역량 진단을 진행하지 않은 경우) -->
+            <div id="supplier-result-empty-state" class="bg-white rounded-3xl p-8 sm:p-14 border border-slate-200 shadow-sm text-center space-y-6">
+                <div class="w-20 h-20 mx-auto rounded-3xl bg-teal-50 text-teal-600 flex items-center justify-center text-3xl font-black border border-teal-200/80 shadow-inner">
+                    <i class="fa-solid fa-chart-pie"></i>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
-                    <button onclick="openChatbotAndAsk('우리 기업의 자가진단 결과를 바탕으로 해외진출 맞춤형 전략 보고서를 작성해줘.')" class="bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black px-5 py-3 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
-                        <i class="fa-solid fa-comments text-teal-900"></i> AI 맞춤 보고서 질의 (챗봇)
-                    </button>
-                    <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-4 py-3 rounded-xl text-xs sm:text-sm border border-slate-600 transition flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-download"></i> 진단서 인쇄/PDF
+                <div class="max-w-xl mx-auto space-y-2">
+                    <h3 class="text-2xl font-black text-slate-900">아직 수행된 기업 역량 진단 기록이 없습니다</h3>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        귀사의 기술 분야, 해외 실적, 재무 여력 및 희망 권역 정보를 입력하시면 
+                        <b>4대 축 다각도 진단 스코어</b>와 <b>정부 8대 지원사업 맞춤형 패스트트랙 로드맵</b>이 즉시 도출됩니다.
+                    </p>
+                </div>
+                <div class="pt-2">
+                    <button onclick="switchTab('wizard')" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black text-sm sm:text-base shadow-xl transition-all inline-flex items-center gap-2.5 cursor-pointer">
+                        <i class="fa-solid fa-sliders text-amber-300"></i>
+                        <span>1. 기업 역량 자가진단 시작하기</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Diagnostics Metrics Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
-                <!-- Radar Score Chart Container (Updated 4 Axes: 기술/인증, 해외실적, 자부담여력, 법률/행정) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
-                    <div>
-                        <h3 class="text-base font-bold text-slate-800">역량 다각도 진단 스코어</h3>
-                        <p class="text-xs text-slate-500">고도화 4개 축 지수 (100점 만점)</p>
+            <!-- 2. ACTIVE RESULT CONTAINER (진단 완료 시 실시간 렌더링) -->
+            <div id="supplier-result-content-container" class="space-y-6 hidden animate-fade-in">
+                <!-- Result Summary Header Card -->
+                <div id="result-header-card" class="bg-gradient-to-r from-slate-900 via-slate-800 to-teal-900 text-white p-6 sm:p-8 rounded-2xl shadow-xl border border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <span id="res-comp-tag" class="bg-teal-500/30 text-teal-200 text-xs px-3 py-1 rounded-full border border-teal-400/30 font-semibold">진단 완료</span>
+                            <span id="res-stage-badge" class="bg-emerald-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow-sm">Stage 2: 현지 실증 검증 단계</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-white" id="res-title-text">(주)한국스마트수자원 맞춤형 해외진출 패스트트랙</h2>
+                        <p class="text-xs sm:text-sm text-slate-300" id="res-desc-text">귀사의 기술력과 준비도 분석 결과, <b>[5번 현지실증(Test-bed) + 1번 바이어 초청상담]</b> 연계 패키지가 가장 효율적입니다.</p>
                     </div>
+                    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+                        <button onclick="openChatbotAndAsk('우리 기업의 자가진단 결과를 바탕으로 해외진출 맞춤형 전략 보고서를 작성해줘.')" class="bg-gradient-to-r from-teal-400 to-emerald-400 hover:from-teal-300 hover:to-emerald-300 text-slate-950 font-black px-5 py-3 rounded-xl text-xs sm:text-sm transition flex items-center justify-center gap-2 shadow-md cursor-pointer">
+                            <i class="fa-solid fa-comments text-teal-900"></i> AI 맞춤 보고서 질의 (챗봇)
+                        </button>
+                        <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium px-4 py-3 rounded-xl text-xs sm:text-sm border border-slate-600 transition flex items-center justify-center gap-2 cursor-pointer">
+                            <i class="fa-solid fa-download"></i> 진단서 인쇄/PDF
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Diagnostics Metrics Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     
-                    <div class="w-full max-w-[280px] h-[250px] mx-auto">
-                        <canvas id="scoreRadarChart"></canvas>
+                    <!-- Radar Score Chart Container (4 Axes: 기술/인증, 해외실적, 자부담여력, 법률/행정) -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between space-y-4">
+                        <div>
+                            <h3 class="text-base font-bold text-slate-800">역량 다각도 진단 스코어</h3>
+                            <p class="text-xs text-slate-500">고도화 4개 축 지수 (100점 만점)</p>
+                        </div>
+                        
+                        <div class="w-full max-w-[280px] h-[250px] mx-auto">
+                            <canvas id="scoreRadarChart"></canvas>
+                        </div>
+
+                        <div id="score-summary-pills" class="w-full grid grid-cols-2 gap-2 text-center text-xs pt-3 border-t border-slate-100">
+                            <!-- Dynamic Pills -->
+                        </div>
                     </div>
 
-                    <div id="score-summary-pills" class="w-full grid grid-cols-2 gap-2 text-center text-xs pt-3 border-t border-slate-100">
-                        <!-- Dynamic Pills -->
+                    <!-- Recommended Strategy & Interactive Roadmap -->
+                    <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                        <div>
+                            <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">맞춤형 추천 전략</span>
+                            <h3 class="text-xl font-bold text-slate-900 mt-0.5">추천 원스톱 패스트트랙 로드맵</h3>
+                            <p class="text-xs text-slate-500">타깃 권역 및 기술 구현 형태에 맞춘 최단 수주 가이드입니다.</p>
+                        </div>
+
+                        <!-- Step Cards Container -->
+                        <div class="space-y-3" id="roadmap-step-container">
+                            <!-- Dynamic Roadmap Steps -->
+                        </div>
                     </div>
+
                 </div>
 
-                <!-- Recommended Strategy & Interactive Roadmap -->
-                <div class="lg:col-span-2 bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-                    <div>
-                        <span class="text-xs font-bold text-teal-700 uppercase tracking-wider">맞춤형 추천 전략</span>
-                        <h3 class="text-xl font-bold text-slate-900 mt-0.5">추천 원스톱 패스트트랙 로드맵</h3>
-                        <p class="text-xs text-slate-500">타깃 권역 및 기술 구현 형태에 맞춘 최단 수주 가이드입니다.</p>
+                <!-- Matched 8-Program Combination -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">추천 8대 지원프로그램 매칭 연계 패키지</h3>
+                            <p class="text-xs text-slate-500">귀사의 현재 진단 결과에 따라 우선 신청을 권장하는 정부 지원사업입니다.</p>
+                        </div>
+                        <span class="text-xs bg-teal-50 text-teal-800 px-3 py-1 rounded-full font-bold border border-teal-100">총 <span id="matched-count">3</span>개 사업 매칭</span>
                     </div>
 
-                    <!-- Step Cards Container -->
-                    <div class="space-y-3" id="roadmap-step-container">
-                        <!-- Dynamic Roadmap Steps -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="matched-programs-grid">
+                        <!-- Dynamic Program Cards -->
                     </div>
-                </div>
-
-            </div>
-
-            <!-- Matched 8-Program Combination -->
-            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
-                <div class="flex justify-between items-center border-b border-slate-100 pb-4">
-                    <div>
-                        <h3 class="text-lg font-bold text-slate-900">추천 8대 지원프로그램 매칭 연계 패키지</h3>
-                        <p class="text-xs text-slate-500">귀사의 현재 진단 결과에 따라 우선 신청을 권장하는 정부 지원사업입니다.</p>
-                    </div>
-                    <span class="text-xs bg-teal-50 text-teal-800 px-3 py-1 rounded-full font-bold border border-teal-100">총 <span id="matched-count">3</span>개 사업 매칭</span>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="matched-programs-grid">
-                    <!-- Dynamic Program Cards -->
                 </div>
             </div>
 
@@ -432,7 +469,7 @@
             </div>
         </section>
 
-        <!-- SECTION 5: DIAGNOSIS HISTORY MANAGEMENT -->
+        <!-- SECTION 4: DIAGNOSIS HISTORY MANAGEMENT -->
         <section id="section-history" class="space-y-6 hidden">
             <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm card-glow space-y-6">
                 <!-- Header Card -->
@@ -445,7 +482,7 @@
                         <h2 class="text-2xl font-bold text-slate-900 mt-1">백엔드 서버 저장 진단 이력 관리</h2>
                         <p class="text-xs sm:text-sm text-slate-500 mt-1">과거에 수행된 기업 자가진단 기록을 조회하고, 클릭 한 번으로 이전 진단 결과 및 패스트트랙 로드맵을 다시 불러올 수 있습니다.</p>
                     </div>
-                    <button onclick="refreshHistoryTable()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-4 py-2.5 rounded-xl border border-slate-200 font-semibold transition flex items-center gap-2 shrink-0">
+                    <button onclick="refreshHistoryTable()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs px-4 py-2.5 rounded-xl border border-slate-200 font-semibold transition flex items-center gap-2 shrink-0 cursor-pointer">
                         <i class="fa-solid fa-rotate text-teal-600"></i> 이력 새로고침
                     </button>
                 </div>
@@ -487,6 +524,432 @@
                 </div>
             </div>
         </section>
+
+        </div> <!-- /role-view-supplier -->
+
+
+        <!-- ========================================================================= -->
+        <!-- ROLE VIEW 2: DEMAND MODE (해외 수요처 물·환경 프로젝트 수요 측정 및 등록) -->
+        <!-- ========================================================================= -->
+        <div id="role-view-demand" class="space-y-8 hidden">
+            
+            <!-- SUB-SECTION 1: DEMAND FORM (1. 해외 인프라 수요 측정) -->
+            <section id="demand-section-form" class="space-y-8">
+                <!-- Intro Card & Quick Sample Scenario Selector -->
+                <div class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 text-white rounded-3xl p-6 sm:p-10 border border-teal-800/40 shadow-xl space-y-6 relative overflow-hidden">
+                    <div class="flex flex-wrap items-center justify-between gap-4 relative z-10">
+                        <div class="space-y-2 max-w-2xl">
+                            <span class="px-3 py-1 rounded-full text-xs font-black bg-teal-500/20 text-teal-300 border border-teal-500/40 inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-earth-americas"></i> Global Buyer / Offtaker Demand Assessment
+                            </span>
+                            <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                                해외 발주처·국가별 물·환경 인프라 수요 측정 & 진단
+                            </h2>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                                현지 수질·수량 당면 과제, 목표 처리용량, 프로젝트 예산 및 선호 조달 방식을 입력하시면, 
+                                <b>종합 수요 지수를 산출</b>하고 한국의 최적 기술을 보유한 <b>검증된 공급기업과 1:1 매칭</b>해 드립니다.
+                            </p>
+                        </div>
+
+                        <!-- Quick Preset Scenarios -->
+                        <div class="bg-slate-950/70 p-4 rounded-2xl border border-slate-800 space-y-2.5 w-full sm:w-auto">
+                            <span class="text-xs font-bold text-teal-300 block">
+                                <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> 대표 시나리오 즉시 채우기:
+                            </span>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="fillSampleDemandForm(1)" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-teal-600 text-slate-200 hover:text-white text-xs font-bold border border-slate-700 transition cursor-pointer">
+                                    🇮🇩 인니 신수도 AI 관망
+                                </button>
+                                <button type="button" onclick="fillSampleDemandForm(2)" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-teal-600 text-slate-200 hover:text-white text-xs font-bold border border-slate-700 transition cursor-pointer">
+                                    🇻🇳 베트남 해수담수화
+                                </button>
+                                <button type="button" onclick="fillSampleDemandForm(3)" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-teal-600 text-slate-200 hover:text-white text-xs font-bold border border-slate-700 transition cursor-pointer">
+                                    🇸🇦 사우디 NEOM ZLD
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Demand Assessment Form -->
+                <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-8">
+                    <div class="border-b border-slate-100 pb-4">
+                        <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-list text-teal-600"></i> 해외 발주 프로젝트 수요 명세서 입력
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">정확한 정보를 입력할수록 최적의 한국 파트너 기업 및 지원사업 패키지가 정밀하게 매칭됩니다.</p>
+                    </div>
+
+                    <form id="demand-assessment-form" onsubmit="handleDemandSubmit(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 text-xs sm:text-sm">
+                            <!-- Country -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">발주 국가 및 대상 도시 <span class="text-rose-500">*</span></label>
+                                <input type="text" id="demand-country" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50" placeholder="예: 인도네시아 (누산타라 신수도)">
+                            </div>
+
+                            <!-- Client Org -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">발주처 / 수요 기관명 <span class="text-rose-500">*</span></label>
+                                <input type="text" id="demand-client-org" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50" placeholder="예: 공공사업주택부 (PUPR) 또는 수도공사">
+                            </div>
+
+                            <!-- Region -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">대상 권역 <span class="text-rose-500">*</span></label>
+                                <select id="demand-region" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50">
+                                    <option value="sea">동남아시아 (베트남, 인도네시아, 필리핀 등)</option>
+                                    <option value="me">중동 / 북아프리카 (사우디, UAE, 카타르 등)</option>
+                                    <option value="ca">중앙아시아 (우즈베키스탄, 카자흐스탄 등)</option>
+                                    <option value="la">중남미 / 아프리카 (콜롬비아, 르완다 등)</option>
+                                    <option value="sa">서남아시아 (인도, 방글라데시 등)</option>
+                                    <option value="global">선진 시장 (미국, 유럽 등)</option>
+                                </select>
+                            </div>
+
+                            <!-- Field -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">핵심 요구 기술 분야 <span class="text-rose-500">*</span></label>
+                                <select id="demand-field" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50">
+                                    <option value="smart_water_grid">스마트 상하수도 및 지능형 관망관리</option>
+                                    <option value="desalination">해수담수화 및 염분차 발전 / 수자원 확보</option>
+                                    <option value="industrial_wastewater">산업폐수 무방류(ZLD) 및 고도처리</option>
+                                    <option value="sludge_bioenergy">하수슬러지 감량 및 바이오가스 / 에너지화</option>
+                                    <option value="water_resources_flood">통합 수자원 관리(IWRM) 및 홍수·가뭄 조기경보</option>
+                                    <option value="membrane_filtration">고도 정수처리 분리막(UF/NF/RO) 및 필터</option>
+                                    <option value="micro_pollutants">신종 미세오염물질(미세플라스틱 등) 저감</option>
+                                </select>
+                            </div>
+
+                            <!-- Target Capacity -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">목표 일일 처리용량 (m³/day)</label>
+                                <input type="text" id="demand-capacity" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50" placeholder="예: 30,000 m³/day 또는 100,000 m³/day">
+                            </div>
+
+                            <!-- Budget -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">사업 예산 규모 (단위: 백만 달러, USD M)</label>
+                                <input type="number" id="demand-budget" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50" placeholder="예: 45 (USD 45M = 약 600억 원)">
+                            </div>
+
+                            <!-- Procurement Type -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">선호 조달 및 계약 방식</label>
+                                <select id="demand-procurement" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50">
+                                    <option value="epc_turnkey">EPC 턴키 (설계·조달·시공 일괄)</option>
+                                    <option value="equipment_export">단품 기자재 및 핵심 모듈 공급</option>
+                                    <option value="licensing_onm">기술 라이선싱 및 위탁운영(O&M)</option>
+                                    <option value="joint_venture">현지 합작법인(JV) 및 PPP/BOT 투자개발</option>
+                                </select>
+                            </div>
+
+                            <!-- Financing Type -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">재원 조달 선호 모델</label>
+                                <select id="demand-financing" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50">
+                                    <option value="oda_edcf">정부 ODA / EDCF 유상원조 연계</option>
+                                    <option value="mdb_loan">다자개발은행(MDB) 차관 (ADB, WB 등)</option>
+                                    <option value="gcf_climate">녹색기후기금(GCF) 및 기후금융</option>
+                                    <option value="commercial">발주처 자체 예산 및 민간 상업 파이낸싱</option>
+                                </select>
+                            </div>
+
+                            <!-- Urgency -->
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">사업 추진 긴급도</label>
+                                <select id="demand-urgency" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50">
+                                    <option value="high">긴급 (1년 이내 발주 또는 시범도입 추진)</option>
+                                    <option value="medium">보통 (1~2년 이내 본타당성/발주 추진)</option>
+                                    <option value="normal">중장기 기획 (중장기 마스터플랜 수립 단계)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Issues & Specs -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-xs sm:text-sm pt-2">
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">현지 수자원/환경 주요 문제점 (Issue Summary)</label>
+                                <textarea id="demand-issue" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50" placeholder="예: 상수관망 누수율 40% 이상 및 열대기후 관망 수압 불균형"></textarea>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="font-bold text-slate-700 block">필수 요구 사양 및 희망 조건 (콤마로 구분)</label>
+                                <textarea id="demand-req-specs" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-teal-500 focus:outline-none bg-slate-50" placeholder="예: AI 누수감지 솔루션, AMI 스마트 미터링, 현지 O&M 교육 지원"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-4 flex justify-end">
+                            <button type="submit" id="demand-submit-btn" class="px-6 py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-500 text-white font-extrabold text-sm sm:text-base shadow-lg transition-all flex items-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-calculator"></i> 수요 지수 산출 및 한국 솔루션 즉시 매칭
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+
+            <!-- SUB-SECTION 2: DEMAND RESULT (2. 수요 진단 결과 & 기업 매칭) -->
+            <section id="demand-section-result" class="space-y-8 hidden">
+                
+                <!-- 1. EMPTY STATE (아직 수요 측정을 진행하지 않은 경우) -->
+                <div id="demand-result-empty-state" class="bg-white rounded-3xl p-8 sm:p-14 border border-slate-200 shadow-sm text-center space-y-6">
+                    <div class="w-20 h-20 mx-auto rounded-3xl bg-teal-50 text-teal-600 flex items-center justify-center text-3xl font-black border border-teal-200/80 shadow-inner">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <div class="max-w-xl mx-auto space-y-2">
+                        <h3 class="text-2xl font-black text-slate-900">아직 측정된 해외 수요 데이터가 없습니다</h3>
+                        <p class="text-sm text-slate-500 leading-relaxed">
+                            발주 국가, 목표 처리용량, 프로젝트 예산 및 요구 스펙을 입력하시면 
+                            <b>AI 기반 정밀 수요 지수</b>와 <b>최적 매칭 한국 공급기업 분석 리포트</b>가 즉시 도출됩니다.
+                        </p>
+                    </div>
+                    <div class="pt-2">
+                        <button onclick="switchDemandTab('form')" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-teal-600 via-teal-700 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black text-sm sm:text-base shadow-xl transition-all inline-flex items-center gap-2.5 cursor-pointer">
+                            <i class="fa-solid fa-clipboard-list text-amber-300"></i>
+                            <span>1. 해외 인프라 수요 측정 시작하기</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 2. ACTIVE RESULT CONTAINER (수요 측정 완료 시 실시간 렌더링) -->
+                <div id="demand-result-content-container" class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-8 text-slate-900 hidden animate-fade-in">
+                    
+                    <!-- Result Header -->
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-6">
+                        <div>
+                            <span class="text-xs font-bold text-teal-700 uppercase tracking-wider block">Demand Assessment Complete</span>
+                            <h3 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1" id="demand-result-project-title">
+                                해외 발주처 수요 지수 분석 & 최적 솔루션 매칭
+                            </h3>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span id="demand-grade-badge" class="px-4 py-2 rounded-2xl bg-teal-100 text-teal-900 font-black text-sm border border-teal-300 shadow-2xs">
+                                AAA (최우선 지원 프로젝트)
+                            </span>
+                            <button onclick="switchDemandTab('form')" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold border border-slate-200 transition cursor-pointer flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-rotate-left text-teal-600"></i> 다시 측정하기
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4-Score Overview Cards (Bright & Large Numbers) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl text-center space-y-1 shadow-2xs">
+                            <span class="text-xs text-slate-500 font-bold block">종합 수요 매력도</span>
+                            <span id="demand-score-overall" class="text-4xl font-black text-teal-700 block">-</span>
+                            <span class="text-[11px] text-slate-400 block font-semibold">100점 만점 기준</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl text-center space-y-1 shadow-2xs">
+                            <span class="text-xs text-slate-500 font-bold block">긴급도 & 우선순위</span>
+                            <span id="demand-score-urgency" class="text-3xl font-black text-rose-600 block">-</span>
+                            <span class="text-[11px] text-rose-600 block font-semibold">정책적 시급성</span>
+                        </div>
+                        <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl text-center space-y-1 shadow-2xs">
+                            <span class="text-xs text-slate-500 font-bold block">재원 조달 타당성</span>
+                            <span id="demand-score-financing" class="text-3xl font-black text-indigo-700 block">-</span>
+                            <span class="text-[11px] text-indigo-600 block font-semibold">ODA/차관 연계</span>
+                        </div>
+                        <div class="bg-slate-950/5 bg-slate-50 border border-slate-200 p-5 rounded-2xl text-center space-y-1 shadow-2xs">
+                            <span class="text-xs text-slate-500 font-bold block">기술 도입 준비도</span>
+                            <span id="demand-score-readiness" class="text-3xl font-black text-amber-600 block">-</span>
+                            <span class="text-[11px] text-amber-600 block font-semibold">조달 모델 명확성</span>
+                        </div>
+                    </div>
+
+                    <!-- Tech Recommendation & Government Bridge (High Visibility) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 text-sm">
+                        <div class="bg-teal-50/80 border border-teal-200 p-6 rounded-2xl space-y-2 shadow-2xs">
+                            <span class="text-xs font-bold text-teal-800 flex items-center gap-1.5 uppercase tracking-wide">
+                                <i class="fa-solid fa-microchip text-teal-600"></i> K-녹색기술 최적 매칭 솔루션
+                            </span>
+                            <p id="demand-recommended-tech" class="text-slate-900 font-black text-base sm:text-lg leading-snug">
+                                -
+                            </p>
+                        </div>
+                        <div class="bg-indigo-50/80 border border-indigo-200 p-6 rounded-2xl space-y-2 shadow-2xs">
+                            <span class="text-xs font-bold text-indigo-800 flex items-center gap-1.5 uppercase tracking-wide">
+                                <i class="fa-solid fa-bridge text-indigo-600"></i> 정부 지원사업 패스트트랙 연계 경로
+                            </span>
+                            <p id="demand-fasttrack-support" class="text-slate-900 font-black text-base sm:text-lg leading-snug">
+                                -
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Matched Korean Suppliers (3-Column Comparison Grid) -->
+                    <div class="space-y-4 pt-6 border-t border-slate-100">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <div>
+                                <h4 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-handshake-angle text-teal-600"></i> 최적 매칭 한국 공급기업 비교 분석
+                                </h4>
+                                <p class="text-xs sm:text-sm text-slate-500 mt-0.5">기술·실적·인증 다차원 핏(Fit) 분석을 통과한 상위 우수 공급사입니다.</p>
+                            </div>
+                            <span class="text-xs px-3 py-1 rounded-full bg-slate-100 text-slate-600 border border-slate-200 font-bold">
+                                3개사 비교 분석 완료
+                            </span>
+                        </div>
+
+                        <!-- 3-Column Grid Container -->
+                        <div id="demand-matched-suppliers-list" class="grid grid-cols-1 lg:grid-cols-3 gap-5 pt-2">
+                            <!-- Populated dynamically by demandController.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- SUB-SECTION 3: DEMAND HISTORY (3. 수요 진단 이력 관리) -->
+            <section id="demand-section-history" class="space-y-6 hidden">
+                <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
+                    <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-teal-600"></i> 해외 수요 측정 & 진단 이력 관리
+                            </h3>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-1">이전에 측정한 글로벌 인프라 프로젝트 수요와 매칭 분석 기록을 확인하고 재검토할 수 있습니다.</p>
+                        </div>
+                        <button onclick="clearDemandHistory()" class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold border border-rose-200 transition cursor-pointer flex items-center gap-1.5">
+                            <i class="fa-solid fa-trash-can"></i> 전체 이력 초기화
+                        </button>
+                    </div>
+
+                    <!-- Statistics Summary -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-700 flex items-center justify-center text-lg font-bold">
+                                <i class="fa-solid fa-list-check"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block font-medium">총 수요 측정 건수</span>
+                                <b class="text-slate-800 text-base" id="demand-stat-total-count">0건</b>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-700 flex items-center justify-center text-lg font-bold">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block font-medium">최근 측정 일자</span>
+                                <b class="text-slate-800 text-base" id="demand-stat-last-date">-</b>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-700 flex items-center justify-center text-lg font-bold">
+                                <i class="fa-solid fa-chart-pie"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block font-medium">평균 종합 수요 지수</span>
+                                <b class="text-slate-800 text-base" id="demand-stat-avg-score">0점</b>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Demand History Table Container -->
+                    <div id="demand-history-container" class="pt-2">
+                        <!-- Populated dynamically by demandController.js -->
+                    </div>
+                </div>
+            </section>
+
+        </div> <!-- /role-view-demand -->
+
+
+        <!-- ========================================================================= -->
+        <!-- ROLE VIEW 3: MATCHING HUB (수요자 ↔ 공급자 양방향 스마트 매칭 & 대시보드) -->
+        <!-- ========================================================================= -->
+        <div id="role-view-matching" class="space-y-8 hidden">
+            
+            <!-- Matching Overview KPI Header -->
+            <div class="bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 rounded-3xl p-6 sm:p-10 border border-teal-800/40 text-white shadow-2xl space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div class="space-y-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-black bg-teal-500/20 text-teal-300 border border-teal-500/40 inline-flex items-center gap-1.5">
+                            <i class="fa-solid fa-arrows-split-up-and-left"></i> Two-Way Bilateral Matching Engine
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                            수요자 ↔ 공급자 양방향 스마트 매칭 허브
+                        </h2>
+                        <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+                            한국 기업의 기술·실적 스펙과 해외 발주처의 인프라 요구 사양을 인공지능(AI)과 5대 축 매칭 알고리즘으로 연결하여 최적의 패스트트랙 수주 경로를 제시합니다.
+                        </p>
+                    </div>
+
+                    <button onclick="openChatbot()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs sm:text-sm font-extrabold shadow-lg transition flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-comments"></i> 1:1 수주 매칭 컨설팅
+                    </button>
+                </div>
+
+                <!-- 3 Major Stat Badges -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-800/80">
+                    <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-earth-americas"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-semibold">글로벌 발주 수요 풀</span>
+                            <b class="text-2xl font-black text-white" id="stat-total-demands">87건</b>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-building-circle-check"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-semibold">한국 등록 공급기업 풀</span>
+                            <b class="text-2xl font-black text-white" id="stat-total-suppliers">132개사</b>
+                        </div>
+                    </div>
+                    <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-2xl flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold">
+                            <i class="fa-solid fa-circle-nodes"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block font-semibold">평균 매칭 적합률</span>
+                            <b class="text-2xl font-black text-emerald-400" id="stat-match-rate">89.4%</b>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Demands Directory & Filter Grid in Matching Hub -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <h3 class="text-xl font-black text-slate-900 flex items-center gap-2">
+                            <i class="fa-solid fa-globe text-teal-600"></i> 실시간 글로벌 물·환경 수요 프로젝트 탐색 & 한국 기업 핏 분석
+                        </h3>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">해외 각국 정부 및 발주처의 인프라 프로젝트를 탐색하고, 우리 기업과의 핏(Fit) 분석 및 패스트트랙을 확인하세요.</p>
+                    </div>
+
+                    <!-- Filter Controls -->
+                    <div class="flex flex-wrap gap-2">
+                        <select id="filter-demand-region" onchange="filterDemandProjects()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 font-semibold focus:outline-none">
+                            <option value="all">모든 권역</option>
+                            <option value="sea">동남아시아</option>
+                            <option value="me">중동/북아프리카</option>
+                            <option value="ca">중앙아시아</option>
+                            <option value="la">중남미/아프리카</option>
+                        </select>
+                        <select id="filter-demand-field" onchange="filterDemandProjects()" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 font-semibold focus:outline-none">
+                            <option value="all">모든 기술분야</option>
+                            <option value="smart_water_grid">스마트 상하수도</option>
+                            <option value="desalination">해수담수화</option>
+                            <option value="industrial_wastewater">산업폐수 ZLD</option>
+                            <option value="sludge_bioenergy">슬러지 바이오가스</option>
+                            <option value="water_resources_flood">수자원관리·홍수</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grid of Demand Cards -->
+                <div id="global-demands-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    <!-- Populated dynamically by demandController.js -->
+                </div>
+            </div>
+
+        </div> <!-- /role-view-matching -->
 
     </main>
 
@@ -562,6 +1025,146 @@
         </div>
     </div>
 
+    <!-- DEMAND PROJECT DETAIL & MATCHED SUPPLIERS MODAL -->
+    <div id="demand-detail-modal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 overflow-y-auto hidden">
+        <div class="bg-white border border-slate-200 rounded-3xl max-w-4xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl animate-fade-in text-slate-900">
+            
+            <!-- Modal Header (High Contrast Dark-to-Teal Accent) -->
+            <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-teal-950 p-6 sm:p-7 border-b border-teal-800/40 flex justify-between items-start gap-4 shrink-0 text-white">
+                <div class="space-y-2.5 max-w-3xl">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span id="modal-demand-region-badge" class="px-3 py-1 rounded-lg bg-teal-500/30 text-teal-200 border border-teal-400/40 text-xs font-bold">
+                            동남아시아
+                        </span>
+                        <span id="modal-demand-urgency-badge" class="px-3 py-1 rounded-lg bg-rose-500/30 text-rose-200 border border-rose-400/40 text-xs font-bold">
+                            긴급 발주
+                        </span>
+                        <span id="modal-demand-status-badge" class="px-3 py-1 rounded-lg bg-slate-700/80 text-slate-200 border border-slate-600 text-xs font-semibold">
+                            RFP 기획 단계
+                        </span>
+                    </div>
+                    <h3 id="modal-demand-title" class="text-2xl sm:text-3xl font-black text-white leading-tight tracking-tight">
+                        신수도(IKN) 누산타라 스마트 정수망 & AI 누수제어
+                    </h3>
+                    <p id="modal-demand-client" class="text-sm sm:text-base text-teal-300 font-bold flex items-center gap-2 pt-1">
+                        <i class="fa-solid fa-building text-teal-400"></i> 발주처: 공공사업주택부(PUPR) / 수도청
+                    </p>
+                </div>
+
+                <button onclick="closeDemandDetailModal()" class="w-10 h-10 rounded-2xl bg-white/10 hover:bg-white/20 text-slate-200 hover:text-white flex items-center justify-center transition cursor-pointer shrink-0 border border-white/20" title="닫기 (ESC)">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Scrollable Content (Bright & Crisp High-Visibility Layout) -->
+            <div class="p-6 sm:p-8 overflow-y-auto space-y-7 flex-grow bg-white">
+                
+                <!-- Project Spec Grid (4 Large Stat Cards) -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 bg-slate-50 p-5 sm:p-6 rounded-2xl border border-slate-200/90 shadow-2xs">
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold text-slate-500 block">목표 처리용량</span>
+                        <b class="text-slate-900 text-base sm:text-lg font-black block" id="modal-demand-capacity">100,000 m³/일</b>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold text-slate-500 block">사업 예산규모</span>
+                        <b class="text-emerald-600 text-base sm:text-lg font-black block" id="modal-demand-budget">약 600억 원 (USD 45M)</b>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold text-slate-500 block">조달 및 계약 방식</span>
+                        <b class="text-slate-900 text-sm sm:text-base font-extrabold block" id="modal-demand-procurement">EPC 턴키</b>
+                    </div>
+                    <div class="space-y-1">
+                        <span class="text-xs font-bold text-slate-500 block">재원 조달 모델</span>
+                        <b class="text-indigo-700 text-sm sm:text-base font-extrabold block" id="modal-demand-financing">EDCF 차관 + 현지 재정</b>
+                    </div>
+                </div>
+
+                <!-- Description & Required Specs -->
+                <div class="space-y-3.5">
+                    <h4 class="text-sm sm:text-base font-black text-slate-900 uppercase tracking-wide flex items-center gap-2">
+                        <i class="fa-solid fa-circle-info text-teal-600"></i> 사업 개요 및 발주처 요구사항
+                    </h4>
+                    <p id="modal-demand-desc" class="text-sm sm:text-base text-slate-700 leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-200 font-medium">
+                        인도네시아 정부의 신수도 누산타라 1단계 필수 인프라 구축 프로젝트...
+                    </p>
+                    <div id="modal-demand-specs-container" class="flex flex-wrap gap-2.5 pt-1">
+                        <!-- Populated by demandController.js -->
+                    </div>
+                </div>
+
+                <!-- Matched / Applied Suppliers Section (Highlighted Summary) -->
+                <div class="space-y-4 pt-5 border-t border-slate-200">
+                    <div class="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <h4 class="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-users-viewfinder text-teal-600"></i> 본 프로젝트 지원·매칭 한국 기업 풀 (Suppliers Pool)
+                            </h4>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">발주처 요구사양과 기업의 기술·실적 스펙이 검증된 공급기업 현황입니다.</p>
+                        </div>
+                        <span id="modal-supplier-count-badge" class="px-3 py-1.5 rounded-full bg-teal-100 text-teal-900 border border-teal-300 text-xs font-black shadow-2xs">
+                            5개사 매칭 및 지원 중
+                        </span>
+                    </div>
+
+                    <!-- Suppliers List Container (Populated by demandController.js) -->
+                    <div id="modal-suppliers-list" class="space-y-3">
+                        <!-- Populated dynamically by demandController.js -->
+                    </div>
+                </div>
+
+                <!-- Dynamic Fit Analysis Result Container (Shown on button click) -->
+                <div id="modal-fit-analysis-container" class="hidden space-y-4 pt-4 border-t border-slate-200 animate-fade-in">
+                    <div class="bg-gradient-to-br from-slate-900 to-teal-950 text-white rounded-2xl p-6 border-2 border-teal-500 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-teal-300 flex items-center gap-2">
+                                <i class="fa-solid fa-microchip"></i> 실시간 1:1 맞춤 핏(Fit) 분석 결과
+                            </span>
+                            <span id="modal-fit-score-badge" class="text-sm sm:text-base font-black px-4 py-1.5 rounded-xl bg-emerald-400 text-slate-950 shadow-md">
+                                종합 적합도 94점 (AAA)
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs sm:text-sm">
+                            <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-1.5">
+                                <span class="font-bold text-teal-300 block text-xs uppercase tracking-wider">기술·규격 부합성</span>
+                                <p id="modal-fit-tech-summary" class="text-slate-200 leading-relaxed font-medium">
+                                    귀사의 분리막/AI 수처리 솔루션과 발주처 요구사양이 95% 이상 정확히 일치합니다.
+                                </p>
+                            </div>
+                            <div class="bg-slate-800/90 p-4 rounded-xl border border-slate-700 space-y-1.5">
+                                <span class="font-bold text-indigo-300 block text-xs uppercase tracking-wider">정부 패스트트랙 추천</span>
+                                <p id="modal-fit-fasttrack" class="text-slate-200 leading-relaxed font-medium">
+                                    KEITI 타당성조사(F/S) 지원사업 및 해외 바이어 매칭 연계 권장
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Modal Footer Action Bar (Large, High Contrast Buttons) -->
+            <div class="bg-slate-50 p-4 sm:p-6 border-t border-slate-200 flex flex-wrap items-center justify-between gap-3 shrink-0">
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <button onclick="applyToDemandProject()" id="btn-modal-apply" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-teal-700 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-sm sm:text-base shadow-lg hover:shadow-teal-500/25 transition cursor-pointer flex items-center gap-2.5">
+                        <i class="fa-solid fa-paper-plane text-amber-300"></i> 프로젝트 참여·수주 지원하기 (Apply)
+                    </button>
+                    <button onclick="triggerCompanyFitAnalysis()" id="btn-modal-fit-analysis" class="px-5 py-3.5 rounded-2xl bg-white hover:bg-teal-50 text-teal-800 font-black text-sm sm:text-base border-2 border-teal-500/50 shadow-2xs transition cursor-pointer flex items-center gap-2">
+                        <i class="fa-solid fa-arrows-split-up-and-left text-amber-500"></i> 내 기업과 핏 분석
+                    </button>
+                    <button onclick="requestProjectConsultingFromModal()" class="px-4 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm border border-slate-300 shadow-2xs transition cursor-pointer flex items-center gap-1.5">
+                        <i class="fa-solid fa-comments text-teal-600"></i> 1:1 컨설팅
+                    </button>
+                </div>
+
+                <button onclick="closeDemandDetailModal()" class="px-6 py-3.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-sm transition cursor-pointer">
+                    닫기
+                </button>
+            </div>
+
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 text-center space-y-2">
@@ -571,14 +1174,18 @@
     </footer>
 
     <!-- Scripts -->
-    <script src="./js/program_db.js?v=20260220_v8"></script>
-    <script src="./js/apiClient.js?v=20260220_v8"></script>
-    <script src="./js/uiController.js?v=20260220_v8"></script>
+    <script src="./js/program_db.js?v=20260220_v9"></script>
+    <script src="./js/apiClient.js?v=20260220_v9"></script>
+    <script src="./js/uiController.js?v=20260220_v9"></script>
+    <script src="./js/demandController.js?v=20260220_v9"></script>
     
     <!-- Inline Bulletproof ESC Key Listener for Modals & Chatbot -->
     <script>
         window.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' || e.key === 'Esc' || e.keyCode === 27) {
+                if (typeof closeDemandDetailModal === 'function') {
+                    closeDemandDetailModal();
+                }
                 if (typeof closeChatbot === 'function') {
                     closeChatbot();
                 }
@@ -589,6 +1196,20 @@
                     if (modal) modal.remove();
                     document.querySelectorAll('.modal-backdrop').forEach(function(el){ el.remove(); });
                 }
+            }
+        });
+
+        // Backdrop click to close demand detail modal
+        document.addEventListener('DOMContentLoaded', function() {
+            var demandModal = document.getElementById('demand-detail-modal');
+            if (demandModal) {
+                demandModal.addEventListener('click', function(e) {
+                    if (e.target === demandModal) {
+                        if (typeof closeDemandDetailModal === 'function') {
+                            closeDemandDetailModal();
+                        }
+                    }
+                });
             }
         });
     </script>

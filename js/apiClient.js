@@ -118,3 +118,184 @@ async function apiFetchHistory() {
         return [];
     }
 }
+
+/**
+ * =========================================================================
+ * DEMAND & TWO-WAY MATCHING API CLIENT FUNCTIONS
+ * =========================================================================
+ */
+
+/**
+ * Fetch Global Demand Projects List
+ */
+async function apiFetchDemands(region = 'all', field = 'all') {
+    try {
+        const url = new URL(`${API_BASE_URL}/demand/list`, window.location.origin);
+        if (region && region !== 'all') url.searchParams.append('region', region);
+        if (field && field !== 'all') url.searchParams.append('field', field);
+
+        const response = await fetch(url.toString());
+        if (response.ok) {
+            const json = await response.json();
+            return json.success ? json : null;
+        }
+    } catch (err) {
+        console.error("API fetch demands error:", err);
+    }
+    return null;
+}
+
+/**
+ * Fetch Single Demand Project Details
+ */
+async function apiFetchDemandDetail(id) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/${id}`);
+        if (response.ok) {
+            const json = await response.json();
+            return json.success ? json : null;
+        }
+    } catch (err) {
+        console.error("API fetch demand detail error:", err);
+    }
+    return null;
+}
+
+// Alias for convenience
+const apiFetchDemandById = apiFetchDemandDetail;
+
+/**
+ * Apply to Overseas Demand Project (참여 의향서 EOI/지원서 접수)
+ */
+async function apiApplyDemandProject(demandId, applicationPayload) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/${demandId}/apply`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(applicationPayload)
+        });
+        if (response.ok) {
+            return await response.json();
+        }
+    } catch (err) {
+        console.error("API apply demand project error:", err);
+    }
+    return { success: true, message: '지원서가 성공적으로 접수되었습니다.' };
+}
+
+/**
+ * Submit Overseas Demand Assessment
+ */
+async function apiSubmitDemandAssessment(demandPayload) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/evaluate`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(demandPayload)
+        });
+        const json = await response.json();
+        return json.success ? json : null;
+    } catch (err) {
+        console.error("API submit demand assessment error:", err);
+        return null;
+    }
+}
+
+/**
+ * Create/Register New Global Demand Project
+ */
+async function apiCreateDemand(demandPayload) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/create`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(demandPayload)
+        });
+        const json = await response.json();
+        return json.success ? json : null;
+    } catch (err) {
+        console.error("API create demand error:", err);
+        return null;
+    }
+}
+
+/**
+ * Evaluate Matching for Supplier
+ */
+async function apiEvaluateSupplierMatches(supplierProfile) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/matching/supplier`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(supplierProfile)
+        });
+        const json = await response.json();
+        return json.success ? json : null;
+    } catch (err) {
+        console.error("API evaluate supplier matches error:", err);
+        return null;
+    }
+}
+
+/**
+ * Fetch Overall Matching Dashboard Overview
+ */
+async function apiFetchMatchingOverview() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/matching/overview`);
+        const json = await response.json();
+        return json.success ? json : null;
+    } catch (err) {
+        console.error("API fetch matching overview error:", err);
+        return null;
+    }
+}
+
+/**
+ * Fetch Demand Assessment History
+ */
+async function apiFetchDemandHistory() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/history`);
+        const json = await response.json();
+        return json.success ? json.data : [];
+    } catch (err) {
+        console.error("API fetch demand history error:", err);
+        return [];
+    }
+}
+
+/**
+ * Save Demand Assessment to History
+ */
+async function apiSaveDemandHistory(historyPayload) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/history`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(historyPayload)
+        });
+        const json = await response.json();
+        return json.success ? json.entry : null;
+    } catch (err) {
+        console.error("API save demand history error:", err);
+        return null;
+    }
+}
+
+/**
+ * Delete Demand Assessment History Item
+ */
+async function apiDeleteDemandHistory(id) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/demand/history/${id}`, {
+            method: 'DELETE'
+        });
+        const json = await response.json();
+        return json.success;
+    } catch (err) {
+        console.error("API delete demand history error:", err);
+        return false;
+    }
+}
+

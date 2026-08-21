@@ -21,25 +21,72 @@ window.addEventListener('keydown', (e) => {
 });
 
 /**
- * Tab Switcher (4 Main Tabs: Wizard, Result, Knowledge, History)
+ * Tab Switcher (Wizard, Result, Knowledge, History, Matching)
  */
-function switchTab(tabName) {
-    const tabs = ['wizard', 'result', 'knowledge', 'history'];
+function switchTab(tabName, shouldSave = true) {
+    const tabs = ['wizard', 'result', 'knowledge', 'history', 'matching'];
+    
+    // Toggle Tab Buttons UI
     tabs.forEach(t => {
-        const section = document.getElementById(`section-${t}`);
         const btn = document.getElementById(`tab-btn-${t}`);
-        if (!section || !btn) return;
+        if (!btn) return;
 
         if (t === tabName) {
-            section.classList.remove('hidden');
             btn.classList.add('active-tab');
             btn.classList.remove('hover:text-slate-100');
         } else {
-            section.classList.add('hidden');
             btn.classList.remove('active-tab');
             btn.classList.add('hover:text-slate-100');
         }
     });
+
+    const supplierContainer = document.getElementById('role-view-supplier');
+    const matchingContainer = document.getElementById('role-view-matching');
+    const demandContainer = document.getElementById('role-view-demand');
+
+    if (demandContainer) demandContainer.classList.add('hidden');
+
+    if (tabName === 'matching') {
+        if (supplierContainer) supplierContainer.classList.add('hidden');
+        if (matchingContainer) {
+            matchingContainer.classList.remove('hidden');
+            if (typeof loadMatchingOverview === 'function') loadMatchingOverview();
+        }
+    } else {
+        if (matchingContainer) matchingContainer.classList.add('hidden');
+        if (supplierContainer) supplierContainer.classList.remove('hidden');
+
+        // Toggle supplier sub sections
+        ['wizard', 'result', 'knowledge', 'history'].forEach(t => {
+            const section = document.getElementById(`section-${t}`);
+            if (section) {
+                section.classList.toggle('hidden', t !== tabName);
+            }
+        });
+
+        // Handle Result Tab Empty State
+        if (tabName === 'result') {
+            const emptyState = document.getElementById('supplier-result-empty-state');
+            const contentContainer = document.getElementById('supplier-result-content-container');
+            if (currentDiagnosisResult) {
+                if (emptyState) emptyState.classList.add('hidden');
+                if (contentContainer) contentContainer.classList.remove('hidden');
+                renderResults();
+            } else {
+                if (emptyState) emptyState.classList.remove('hidden');
+                if (contentContainer) contentContainer.classList.add('hidden');
+            }
+        }
+    }
+
+    if (shouldSave) {
+        localStorage.setItem('k_green_supplier_tab', tabName);
+        localStorage.setItem('k_green_active_role', 'supplier');
+        try {
+            history.replaceState(null, '', `#supplier/${tabName}`);
+        } catch (e) {}
+    }
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -147,6 +194,11 @@ async function handleDiagnosisSubmit(e) {
 async function renderResults() {
     if (!currentDiagnosisResult) return;
     const res = currentDiagnosisResult;
+
+    const emptyState = document.getElementById('supplier-result-empty-state');
+    const contentContainer = document.getElementById('supplier-result-content-container');
+    if (emptyState) emptyState.classList.add('hidden');
+    if (contentContainer) contentContainer.classList.remove('hidden');
 
     document.getElementById('res-title-text').innerText = `${res.compName} 맞춤형 해외진출 패스트트랙`;
     document.getElementById('res-stage-badge').innerText = res.stageTitle;
